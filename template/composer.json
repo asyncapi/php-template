@@ -1,0 +1,55 @@
+{
+    "name": "giving_assistant/broker-api",
+    "type": "library",
+    "description": "This is a high level API for message-driven communications to be used as template in AsyncAPI specs",
+    "keywords": [
+        "giving_assistant",
+        "broker-api"
+    ],
+    "homepage": "https://github.com/giving_assistant/broker-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Emiliano Zublena",
+            "email": "emiliano@givingassistant.org",
+            "homepage": "https://givingassistant.org",
+            "role": "Lead Backend Engineer"
+        }
+    ],
+    "require": {
+        "php" : "~7.4",
+        "php-amqplib/php-amqplib": "^2.12"
+    },
+    "require-dev": {
+        "phpspec/prophecy": "^1.12",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.5",
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "GA\\BrokerAPI\\": "src"
+        },
+        "files": [
+            "src/consts.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GA\\BrokerAPI\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit",
+        "check-style": "phpcs src",
+        "fix-style": "phpcbf src"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
