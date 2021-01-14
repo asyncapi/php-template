@@ -6,12 +6,12 @@
  * Time: 11:35
  */
 
-namespace GA\BrokerAPI\Common;
+namespace {{ params.packageName }}\BrokerAPI\Common;
 
-use GA\BrokerAPI\Handlers\HandlerContract;
-use GA\BrokerAPI\Infrastructure\BrokerClientContract;
-use GA\BrokerAPI\Messages\MessageContract;
-use GA\BrokerAPI\Applications\ApplicationContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\BrokerAPI\Applications\ApplicationContract;
 
 interface FactoryContract
 {
@@ -35,10 +35,14 @@ interface FactoryContract
     ): ApplicationContract;
 
     /**
+     * @param string $handlerType
      * @param array $config
      * @return HandlerContract
      */
-    public function createHandler(array $config = []): HandlerContract;
+    public function createHandler(
+        string $handlerType,
+        array $config = []
+    ): HandlerContract;
 
     /**
      * @param MessageContract $message

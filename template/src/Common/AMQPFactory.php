@@ -6,15 +6,15 @@
  * Time: 11:39
  */
 
-namespace GA\BrokerAPI\Common;
+namespace {{ params.packageName }}\BrokerAPI\Common;
 
-use GA\BrokerAPI\Handlers\HandlerContract;
-use GA\BrokerAPI\Infrastructure\BrokerClientContract;
-use GA\BrokerAPI\Infrastructure\AMQPBrokerClient;
-use GA\BrokerAPI\Messages\MessageContract;
-use GA\BrokerAPI\Applications\ApplicationContract;
-use GA\BrokerAPI\Applications\Consumer;
-use GA\BrokerAPI\Applications\Producer;
+use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\BrokerAPI\Infrastructure\AMQPBrokerClient;
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\BrokerAPI\Applications\ApplicationContract;
+use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
+use {{ params.packageName }}\BrokerAPI\Applications\Producer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -87,12 +87,16 @@ class AMQPFactory implements FactoryContract
     }
 
     /**
+     * @param string $handlerType
      * @param array $config
      * @return HandlerContract
      */
-    public function createHandler(array $config = []): HandlerContract
+    public function createHandler(
+        string $handlerType,
+        array $config = []
+    ): HandlerContract
     {
-        // TODO: Implement createHandler() method.
+        return new $handlerType($config);
     }
 
     /**

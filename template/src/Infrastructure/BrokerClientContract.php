@@ -6,7 +6,9 @@
  * Time: 11:11
  */
 
-namespace GA\BrokerAPI\Infrastructure;
+namespace {{ params.packageName }}\BrokerAPI\Infrastructure;
+
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
 
 interface BrokerClientContract
 {
@@ -25,11 +27,11 @@ interface BrokerClientContract
      * @param array $config
      * @return bool
      */
-    public function publish($message, array $config = []): bool;
+    public function publishToExchange(MessageContract $message, array $config = []): bool;
 
     /**
      * @param array $config
      * @return bool
      */
-    public function consume(array $config = []): bool;
+    public function consumeThroughExchange(array $config = []): bool;
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace GA\BrokerAPI\Tests;
+namespace {{ params.packageName }}\BrokerAPI\Tests;
 
-use GA\BrokerAPI\BrokerAPI;
-use GA\BrokerAPI\Common\AMQPFactory;
+use {{ params.packageName }}\BrokerAPI\BrokerAPI;
+use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
 
 class BrokerAPITest extends BaseTest
 {

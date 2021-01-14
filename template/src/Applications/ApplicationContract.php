@@ -6,11 +6,11 @@
  * Time: 14:38
  */
 
-namespace GA\BrokerAPI\Applications;
+namespace {{ params.packageName }}\BrokerAPI\Applications;
 
-use GA\BrokerAPI\Common\FactoryContract;
-use GA\BrokerAPI\Handlers\HandlerContract;
-use GA\BrokerAPI\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
 
 abstract class ApplicationContract
 {
@@ -22,7 +22,7 @@ abstract class ApplicationContract
     /**
      * ApplicationContract constructor.
      * @param BrokerClientContract $brokerClient
-     * @param HandlerContract|null $handler
+     * @param FactoryContract|null $handler
      */
     public function __construct(
         BrokerClientContract $brokerClient,

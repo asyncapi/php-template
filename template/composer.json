@@ -28,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "GA\\BrokerAPI\\": "src"
+            "{{ params.packageName }}\\BrokerAPI\\": "src"
         },
         "files": [
             "src/consts.php"
@@ -36,7 +36,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "GA\\BrokerAPI\\Tests\\": "tests"
+            "{{ params.packageName }}\\BrokerAPI\\Tests\\": "tests"
         }
     },
     "scripts": {

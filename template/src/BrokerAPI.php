@@ -6,17 +6,21 @@
  * Time: 10:41
  */
 
-namespace GA\BrokerAPI;
+namespace {{ params.packageName }}\BrokerAPI;
 
-use GA\BrokerAPI\Common\AMQPFactory;
-use GA\BrokerAPI\Common\FactoryContract;
+use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
+use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
 
 final class BrokerAPI
 {
     /** @var string $protocol */
     private $protocol;
 
-    public function __construct(string $protocol = '')
+    /**
+     * BrokerAPI constructor.
+     * @param string $protocol
+     */
+    public function __construct(string $protocol = '{{-asyncapi | getDefaultProtocol}}')
     {
         $this->protocol = $protocol;
     }

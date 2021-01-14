@@ -8,7 +8,8 @@
     "release": "semantic-release",
     "get-version": "echo $npm_package_version",
     "gen-readme-toc": "markdown-toc -i README.md",
-    "lint": "eslint --max-warnings 0 --fix --config .eslintrc ."
+    "lint": "eslint --max-warnings 0 --fix --config .eslintrc .",
+    "generate": "./utilities/generate.sh"
   },
   "keywords": [
     "asyncapi",
@@ -23,7 +24,8 @@
   },
   "dependencies": {
     "@asyncapi/generator-filters": "^1.1.0",
-    "@asyncapi/generator-hooks": "^0.1.0"
+    "@asyncapi/generator-hooks": "^0.1.0",
+    "lodash": "^4.17.15"
   },
   "generator": {
     "renderer": "nunjucks",
@@ -78,6 +80,6 @@
     "jest-esm-transformer": "^1.0.0",
     "markdown-toc": "^1.2.0",
     "rimraf": "^3.0.2",
-    "semantic-release": "^17.3.1"
+    "semantic-release": "^17.3.2"
   }
 }

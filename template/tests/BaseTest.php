@@ -6,7 +6,7 @@
  * Time: 11:02
  */
 
-namespace GA\BrokerAPI\Tests;
+namespace {{ params.packageName }}\BrokerAPI\Tests;
 
 use Prophecy\PhpUnit\ProphecyTrait;
 

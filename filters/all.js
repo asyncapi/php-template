@@ -39,10 +39,11 @@ function defineType(prop, propName) {
         }
     }
 }
+
 filter.defineType = defineType;
 
 function toClass(couldBePrimitive) {
-    switch(couldBePrimitive) {
+    switch (couldBePrimitive) {
         case 'int':
             return 'int';
         case 'long':
@@ -57,10 +58,11 @@ function toClass(couldBePrimitive) {
             return couldBePrimitive;
     }
 }
+
 filter.toClass = toClass;
 
-function toPHPType(str){
-    switch(str) {
+function toPHPType(str) {
+    switch (str) {
         case 'integer':
         case 'int32':
             return 'int';
@@ -87,19 +89,30 @@ function toPHPType(str){
             return '\stdClass';
     }
 }
+
 filter.toPHPType = toPHPType;
 
 function isDefined(obj) {
     return typeof obj !== 'undefined'
 }
+
 filter.isDefined = isDefined;
 
-function isProtocol(api, protocol){
+function isProtocol(api, protocol) {
     return JSON.stringify(api.json()).includes('"protocol":"' + protocol + '"');
 };
 filter.isProtocol = isProtocol;
 
-function isObjectType(schemas){
+function getDefaultProtocol(api) {
+    const {servers} = api.json();
+    const firstAvailableServer = servers[Object.keys(servers)[0]];
+
+    return firstAvailableServer.protocol;
+}
+
+filter.getDefaultProtocol = getDefaultProtocol;
+
+function isObjectType(schemas) {
     var res = [];
     for (let obj of schemas) {
         if (obj._json['type'] === 'object' && !obj._json['x-parser-schema-id'].startsWith('<')) {
@@ -110,10 +123,12 @@ function isObjectType(schemas){
 };
 filter.isObjectType = isObjectType;
 
-function examplesToString(ex){
+function examplesToString(ex) {
     let retStr = "";
     ex.forEach(example => {
-        if (retStr !== "") {retStr += ", "}
+        if (retStr !== "") {
+            retStr += ", "
+        }
         if (typeof example == "object") {
             try {
                 retStr += JSON.stringify(example);
@@ -128,7 +143,7 @@ function examplesToString(ex){
 };
 filter.examplesToString = examplesToString;
 
-function splitByLines(str){
+function splitByLines(str) {
     if (str) {
         return str.split(/\r?\n|\r/).filter((s) => s !== "");
     } else {
@@ -137,17 +152,17 @@ function splitByLines(str){
 };
 filter.splitByLines = splitByLines;
 
-function isRequired(name, list){
+function isRequired(name, list) {
     return list && list.includes(name);
 };
 filter.isRequired = isRequired;
 
-function schemeExists(collection, scheme){
+function schemeExists(collection, scheme) {
     return _.some(collection, {'scheme': scheme});
 };
 filter.schemeExists = schemeExists;
 
-function createEnum(val){
+function createEnum(val) {
     let result;
     let withoutNonWordChars = val.replace(/[^A-Z^a-z^0-9]/g, "_");
     if ((new RegExp('^[^A-Z^a-z]', 'i')).test(withoutNonWordChars)) {
@@ -162,9 +177,17 @@ filter.createEnum = createEnum;
 function debug(val) {
     return JSON.stringify(val, null, "\t");
 }
+
 filter.debug = debug;
 
 function debugObject(val) {
     return JSON.stringify(val);
 }
+
 filter.debugObject = debugObject;
+
+function toPascalCase(val) {
+    return _.upperFirst(_.camelCase(val));
+}
+
+filter.toPascalCase = toPascalCase;

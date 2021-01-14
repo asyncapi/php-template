@@ -6,15 +6,15 @@
  * Time: 11:03
  */
 
-namespace GA\BrokerAPI\Handlers;
+namespace {{ params.packageName }}\BrokerAPI\Handlers;
 
-use GA\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
 
 interface HandlerContract
 {
     /**
-     * @param MessageContract $message
+     * @param $message
      * @return bool
      */
-    public function handle(MessageContract $message): bool;
+    public function handle($message): bool;
 }

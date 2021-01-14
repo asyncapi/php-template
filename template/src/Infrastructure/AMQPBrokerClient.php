@@ -6,10 +6,11 @@
  * Time: 14:37
  */
 
-namespace GA\BrokerAPI\Infrastructure;
+namespace {{ params.packageName }}\BrokerAPI\Infrastructure;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
 
 class AMQPBrokerClient implements BrokerClientContract
 {
@@ -53,24 +54,39 @@ class AMQPBrokerClient implements BrokerClientContract
     }
 
     /**
-     * @param $message
+     * @param MessageContract $message
      * @param array $config
      * @return bool
      */
-    public function publish($message, array $config = []): bool
+    public function publishToExchange(MessageContract $message, array $config = []): bool
     {
         /**
-         * @var string|null $exchange
-         * @var string|null $routingKey
          * @var bool|null $mandatory
          * @var bool|null $immediate
          * @var $ticket
+         * @var string $exchangeName
+         * @var string $exchangeType
+         * @var string $bindingKey
          */
         extract($config);
+        $this->connect();
+        $this->channel->exchange_declare(
+            $exchangeName,
+            $exchangeType,
+            $passive ?? false,
+            $durable ?? false,
+            $autoDelete ?? true,
+            $internal ?? false,
+            $noWait ?? false,
+            $arguments ?? [],
+            $ticket ?? null
+        );
+        /** @var \PhpAmqpLib\Message\AMQPMessage $amqpMessage */
+        $amqpMessage = $message->getPayload();
         $this->channel->basic_publish(
-            $message,
-            $exchange ?? '',
-            $routingKey ?? '',
+            $amqpMessage,
+            $exchangeName ?? '',
+            $bindingKey ?? '',
             $mandatory ?? false,
             $immediate ?? false,
             $ticket ?? null
@@ -81,13 +97,16 @@ class AMQPBrokerClient implements BrokerClientContract
     }
 
     /**
+     * Basic consume function will default to topic through exchange with binding keys.
+     * If other types of consumption are needed, refactor is needed.
+     * Refactoring this functions is easy tho, please follow TDD best practices in order to do so
+     *
      * @param array $config
      * @return bool
      */
-    public function consume(array $config = []): bool
+    public function consumeThroughExchange(array $config = []): bool
     {
         /**
-         * @var string|null $queue
          * @var string|null $consumerTag
          * @var bool|null $noLocal
          * @var bool|null $noAck
@@ -96,10 +115,36 @@ class AMQPBrokerClient implements BrokerClientContract
          * @var $callback
          * @var $ticket
          * @var array|null $arguments
+         * @var string $exchangeName
+         * @var string $exchangeType
+         * @var string $bindingKey
+         * @var bool $exchangeDurable
+         * @var bool $queueDurable
+         * @var bool $autoDelete
          */
         extract($config);
+        $this->connect();
+        $this->channel->exchange_declare(
+            $exchangeName,
+            $exchangeType,
+            false,
+            $exchangeDurable ?? false,
+            $autoDelete ?? true,
+            false,
+            $noWait ?? false,
+            $arguments ?? [],
+            $ticket ?? null
+        );
+        list($queueName) = $this->channel->queue_declare(
+            "",
+            false,
+            $queueDurable ?? false,
+            $autoDelete ?? true,
+            false
+        );
+        $this->channel->queue_bind($queueName, $exchangeName, $bindingKey);
         $this->channel->basic_consume(
-            $queue ?? '',
+            $queueName,
             $consumerTag ?? '',
             $noLocal ?? false,
             $noAck ?? false,

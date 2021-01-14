@@ -6,14 +6,14 @@
  * Time: 19:18
  */
 
-namespace GA\BrokerAPI\Tests\Applications;
+namespace {{ params.packageName }}\BrokerAPI\Tests\Applications;
 
-use GA\BrokerAPI\Applications\Consumer;
-use GA\BrokerAPI\Applications\Producer;
-use GA\BrokerAPI\Common\FactoryContract;
-use GA\BrokerAPI\Handlers\HandlerContract;
-use GA\BrokerAPI\Infrastructure\BrokerClientContract;
-use GA\BrokerAPI\Tests\BaseTest;
+use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
+use {{ params.packageName }}\BrokerAPI\Applications\Producer;
+use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
 
 class BaseApplicationTest extends BaseTest
 {

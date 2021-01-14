@@ -6,7 +6,7 @@
  * Time: 11:03
  */
 
-namespace GA\BrokerAPI\Messages;
+namespace {{ params.packageName }}\BrokerAPI\Messages;
 
 abstract class MessageContract implements \JsonSerializable
 {
@@ -24,6 +24,9 @@ abstract class MessageContract implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getSettings(): array
     {
         return $this->settings;
@@ -47,6 +50,9 @@ abstract class MessageContract implements \JsonSerializable
         return $this->payload;
     }
 
+    /**
+     * @return array|mixed
+     */
     public function jsonSerialize()
     {
         return get_object_vars($this);

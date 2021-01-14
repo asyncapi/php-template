@@ -6,15 +6,16 @@
  * Time: 11:32
  */
 
-namespace GA\BrokerAPI\Tests\Common\AMQP;
+namespace {{ params.packageName }}\BrokerAPI\Tests\Common\AMQP;
 
-use GA\BrokerAPI\Common\AMQPFactory;
-use GA\BrokerAPI\Infrastructure\AMQPBrokerClient;
-use GA\BrokerAPI\Infrastructure\BrokerClientContract;
-use GA\BrokerAPI\Messages\MessageContract;
-use GA\BrokerAPI\Applications\Consumer;
-use GA\BrokerAPI\Applications\Producer;
-use GA\BrokerAPI\Tests\BaseTest;
+use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
+use {{ params.packageName }}\BrokerAPI\Infrastructure\AMQPBrokerClient;
+use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
+use {{ params.packageName }}\BrokerAPI\Applications\Producer;
+use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
+use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Prophecy\Argument;
@@ -93,7 +94,7 @@ class AMQPFactoryTest extends BaseTest
     }
 
     /**
-     * @todo: IMPLEMENT THIS WHENEVER WE HAVE A VALID HANDLER :P
+     * @test
      * @dataProvider requestedHandlerDataProvider
      */
     public function it_creates_requested_handler(
@@ -101,16 +102,26 @@ class AMQPFactoryTest extends BaseTest
         $expectedHandler
     ) {
         //Given we have a valid factory
+        $factory = $this->prophesize(AMQPFactory::class);
+        $instantiatedHandler = $this->prophesize($requestedHandler);
+        $factory
+            ->createHandler($requestedHandler)
+            ->shouldBeCalledOnce()
+            ->willReturn($instantiatedHandler->reveal());
+
         //When we request for a given handler
+        $instantiatedHandler = $factory->reveal()->createHandler($requestedHandler);
+
         //Then we assert we got the handler expected back
+        $this->assertTrue($instantiatedHandler instanceof $expectedHandler);
     }
 
     public function requestedHandlerDataProvider()
     {
         return [
             [
-                'requestedHandler' => '',
-                'expectedHandler'  => '',
+                'requestedHandler' => HandlerContract::class,
+                'expectedHandler'  => HandlerContract::class,
             ],
         ];
     }
