@@ -10,27 +10,17 @@ namespace {{ params.packageName }}\BrokerAPI\Messages;
 
 abstract class MessageContract implements \JsonSerializable
 {
-    /** @var array $settings */
-    private $settings = [];
     private $payload;
-
-    /**
-     * @param array $settings
-     * @return MessageContract
-     */
-    public function setSettings(array $settings = []): MessageContract
-    {
-        $this->settings = $settings;
-        return $this;
-    }
 
     /**
      * @return array
      */
-    public function getSettings(): array
-    {
-        return $this->settings;
-    }
+    abstract public function getters(): array;
+
+    /**
+     * @return array
+     */
+    abstract public function setters(): array;
 
     /**
      * @param null|string $payload
@@ -48,13 +38,5 @@ abstract class MessageContract implements \JsonSerializable
     public function getPayload()
     {
         return $this->payload;
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 }

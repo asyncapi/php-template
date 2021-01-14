@@ -14,7 +14,10 @@ class {{ messageName | camelCase | upperFirst }} extends MessageContract
 
 {%- endfor %}
 {%- for key, obj in message.payload().properties() %}
-    {%- set propertyType = (obj.type() | toPHPType) %}{%- set propertyName = (key | camelCase) %}{%- set propertyGetter = 'get' + (key | camelCase | upperFirst) %}{%- set propertySetter = 'set' + (key | camelCase | upperFirst) %}
+    {%- set propertyType = (obj.type() | toPHPType) %}
+    {%- set propertyName = (key | camelCase) %}
+    {%- set propertyGetter = ( 'get' | getPropertyMethods(key) ) %}
+    {%- set propertySetter = ( 'set' | getPropertyMethods(key) ) %}
     /**
      * @param {{ propertyType }} $id
      * @return MessageContract
@@ -33,4 +36,38 @@ class {{ messageName | camelCase | upperFirst }} extends MessageContract
         return $this->{{ propertyName }};
     }
 {%- endfor %}
+
+    /**
+    * @return array
+    */
+    public function getters(): array
+    {
+        return [
+{%- for key, obj in message.payload().properties() %}
+    {%- set propertyGetter = ( 'get' | getPropertyMethods(key) ) %}
+            '{{ key }}' => '{{ propertyGetter }}',
+{%- endfor %}
+        ];
+    }
+
+    /**
+    * @return array
+    */
+    public function setters(): array
+    {
+        return [
+        {%- for key, obj in message.payload().properties() %}
+        {%- set propertyGetter = ( 'set' | getPropertyMethods(key) ) %}
+            '{{ key }}' => '{{ propertyGetter }}',
+        {%- endfor %}
+        ];
+    }
+
+    /**
+    * @return array|mixed
+    */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }

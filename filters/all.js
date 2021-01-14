@@ -191,3 +191,9 @@ function toPascalCase(val) {
 }
 
 filter.toPascalCase = toPascalCase;
+
+function getPropertyMethods(method, property) {
+    return method + _.upperFirst(_.camelCase(property));
+}
+
+filter.getPropertyMethods = getPropertyMethods;

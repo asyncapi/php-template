@@ -45,12 +45,12 @@ interface FactoryContract
     ): HandlerContract;
 
     /**
-     * @param MessageContract $message
-     * @param array $settings
+     * @param $messageType
+     * @param array $properties
      * @return MessageContract
      */
     public function createMessage(
-        MessageContract $message,
-        array $settings = []
+        $messageType,
+        array $properties = []
     ): MessageContract;
 }

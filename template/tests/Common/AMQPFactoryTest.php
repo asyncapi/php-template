@@ -66,27 +66,48 @@ class AMQPFactoryTest extends BaseTest
         }
     }
 
-    /** @test */
+    /**
+     * TODO: implement this test method by templating things out
+     * Hard to implement test only against abstract class
+     *
+     */
     public function it_creates_amqp_message_with_props_as_body()
     {
         //Given we have our factory and a prophesized MessageContract
-        $factory = new AMQPFactory();
+        $factory = $this->prophesize(AMQPFactory::class);
         $message = $this->prophesize(MessageContract::class);
-        $message->setSettings(Argument::any())
+
+        $factory
+            ->createMessage(
+                MessageContract::class,
+                [
+                    'id' => 1,
+                ]
+            )
             ->shouldBeCalledOnce()
             ->willReturn($message->reveal());
-        $message->setPayload(Argument::any())
+
+        $message->setId(1)
+            ->shouldBeCalledOnce()
+            ->willReturn($message->reveal());
+        $message->setPayload(new AMQPMessage(json_encode($message->reveal())))
             ->shouldBeCalledOnce()
             ->willReturn($message->reveal());
         $message->getPayload()
-            ->willReturn(new AMQPMessage('null'));
+            ->willReturn(new AMQPMessage(json_encode($message->reveal())));
         $message->jsonSerialize()
-            ->willReturn(null);
+            ->willReturn(get_object_vars($message->reveal()));
 
         //When we try to request it's creation from the factory
-        $createdMessage = $factory->createMessage($message->reveal());
+        $createdMessage = $factory->createMessage(
+            MessageContract::class,
+            [
+                'id' => 1
+            ]
+        );
         /** @var AMQPMessage $amqpMessage */
         $amqpMessage = $createdMessage->getPayload();
+
         //Then we assert we got it as expected
         $this->assertTrue($amqpMessage instanceof AMQPMessage);
         //And we assert that the body has all the props from the original MessageContract

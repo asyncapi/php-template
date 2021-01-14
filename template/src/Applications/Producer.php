@@ -22,7 +22,6 @@ final class Producer extends ApplicationContract
         {%- set exchangeDurable = channel.subscribe().bindings().amqp.exchange.durable %}
         {%- set exchangeAutoDelete = channel.subscribe().bindings().amqp.exchange.autoDelete %}
         {%- set queueBindingKey = channel.subscribe().bindings().amqp.queue.bindingKey %}
-        $message = $this->getFactory()->createMessage($message);
         $this->getBrokerClient()->publishToExchange(
             $message,
             [

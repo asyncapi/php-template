@@ -18,6 +18,12 @@ $producer = $factory->createApplication(
         BROKER_VIRTUAL_HOST_KEY => '/',
     ]
 );
-$message = new Merchant();
-$message->setId(1);
+
+$message = $factory->createMessage(
+    Merchant::class,
+    [
+        'id' => 1,
+    ]
+);
+
 $producer->requestMerchantById($message);

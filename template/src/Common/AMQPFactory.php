@@ -100,15 +100,22 @@ class AMQPFactory implements FactoryContract
     }
 
     /**
-     * @param MessageContract $message
-     * @param array $settings
+     * @param $messageType
+     * @param array $properties
      * @return MessageContract
      */
     public function createMessage(
-        MessageContract $message,
-        array $settings = []
+        $messageType,
+        array $properties = []
     ): MessageContract {
-        $message->setSettings($settings)
+        /** @var MessageContract $message */
+        $message = new $messageType();
+        $setters = $message->setters();
+        foreach ($properties as $property => $value) {
+            $setter = $setters[$property];
+            $message->$setter($value);
+        }
+        $message
             ->setPayload(
                 new AMQPMessage(json_encode($message))
             );
