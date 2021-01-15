@@ -47,10 +47,12 @@ interface FactoryContract
     /**
      * @param $messageType
      * @param array $properties
+     * @param array $brokerMessageProperties
      * @return MessageContract
      */
     public function createMessage(
         $messageType,
-        array $properties = []
+        array $properties = [],
+        array $brokerMessageProperties = []
     ): MessageContract;
 }

@@ -7,7 +7,7 @@ use {{ params.packageName }}\BrokerAPI\BrokerAPI;
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
 
-/** @var \GA\BrokerAPI\Applications\Consumer $consumer */
+/** @var \{{ params.packageName }}\BrokerAPI\Applications\Consumer $consumer */
 $consumer = $factory->createApplication(
     CONSUMER_KEY,
     [
@@ -18,5 +18,5 @@ $consumer = $factory->createApplication(
         BROKER_VIRTUAL_HOST_KEY => '/',
     ]
 );
-$handler = new Consumer\Examples\ExampleHandler();
+$handler = new \Examples\Basic\Consumer\Handlers\ExampleHandler();
 $consumer->retrieveMerchantById($handler);

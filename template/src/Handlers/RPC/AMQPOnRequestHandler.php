@@ -1,0 +1,36 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: emiliano
+ * Date: 30/12/20
+ * Time: 11:03
+ */
+
+namespace {{ params.packageName }}\BrokerAPI\Handlers\RPC;
+
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
+use PhpAmqpLib\Message\AMQPMessage;
+
+class AMQPOnRequestHandler extends RPCHandlerContract
+{
+    /**
+     * @param AMQPMessage $message
+     * @return bool
+     */
+    public function handle($message): bool
+    {
+        $amqpMesssage = new AMQPMessage(
+            '',
+            ['correlation_id' => $message->get('correlation_id')]
+        );
+
+        $message->delivery_info['channel']->basic_publish(
+            $amqpMesssage,
+            '',
+            $message->get('reply_to')
+        );
+        $message->delivery_info['channel']->basic_ack(
+            $message->delivery_info['delivery_tag']
+        );
+    }
+}
