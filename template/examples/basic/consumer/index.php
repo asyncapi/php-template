@@ -1,5 +1,5 @@
 <?php
-require "../../vendor/autoload.php";
+require "../../../vendor/autoload.php";
 require "Handlers/ExampleHandler.php";
 
 use {{ params.packageName }}\BrokerAPI\BrokerAPI;

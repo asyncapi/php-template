@@ -1,5 +1,5 @@
 <?php
-require "../../vendor/autoload.php";
+require "../../../vendor/autoload.php";
 require "Handlers/RPCExampleHandler.php";
 
 use {{ params.packageName }}\BrokerAPI\BrokerAPI;
@@ -27,7 +27,9 @@ $message = $factory->createMessage(
     ]
 );
 $handler = new \Examples\RPC\Producer\Handlers\RPCExampleHandler();
-$producer->requestMerchantByIdRPC(
+/** @var \PhpAmqpLib\Message\AMQPMessage $return */
+$return = $producer->requestMerchantByIdRPC(
     $message,
     $handler
 );
+print_r($return->getBody());

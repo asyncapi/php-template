@@ -1,5 +1,5 @@
 <?php
-require "../../vendor/autoload.php";
+require "../../../vendor/autoload.php";
 require "Handlers/RPCExampleHandler.php";
 
 use {{ params.packageName }}\BrokerAPI\BrokerAPI;
@@ -19,4 +19,4 @@ $consumer = $factory->createApplication(
     ]
 );
 $handler = new \Examples\RPC\Consumer\Handlers\RPCExampleHandler();
-$consumer->retrieveMerchantById($handler);
+$consumer->retrieveMerchantByIdRPC($handler);

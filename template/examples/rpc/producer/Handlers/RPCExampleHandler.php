@@ -2,10 +2,10 @@
 
 namespace Examples\RPC\Producer\Handlers;
 
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnRequestHandler;
+use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnResponseHandler;
 
 
-class RPCExampleHandler extends AMQPOnRequestHandler
+class RPCExampleHandler extends AMQPOnResponseHandler
 {
 
 }

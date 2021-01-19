@@ -1,5 +1,5 @@
 <?php
-require "../../vendor/autoload.php";
+require "../../../vendor/autoload.php";
 
 use {{ params.packageName }}\BrokerAPI\BrokerAPI;
 use {{ params.packageName }}\BrokerAPI\Messages\Merchant;

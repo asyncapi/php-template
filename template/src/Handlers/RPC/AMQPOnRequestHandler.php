@@ -11,8 +11,9 @@ namespace {{ params.packageName }}\BrokerAPI\Handlers\RPC;
 use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class AMQPOnRequestHandler extends RPCHandlerContract
+abstract class AMQPOnRequestHandler extends RPCHandlerContract
 {
+    abstract protected function createMessageBody(): string;
     /**
      * @param AMQPMessage $message
      * @return bool
@@ -20,7 +21,7 @@ class AMQPOnRequestHandler extends RPCHandlerContract
     public function handle($message): bool
     {
         $amqpMesssage = new AMQPMessage(
-            '',
+            $this->createMessageBody(),
             ['correlation_id' => $message->get('correlation_id')]
         );
 

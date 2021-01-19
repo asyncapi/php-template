@@ -239,6 +239,10 @@ class AMQPBrokerClientTest extends BaseTest
         $handlerStub = $this->prophesize(AMQPOnResponseHandler::class);
 
         //And a set of declared prophecies to be fulfilled
+        //set correlation id
+        $handlerStub
+            ->setCorrelationId(Argument::any())
+            ->shouldBeCalledOnce();
         //$handler->getMessage() twice, second return AMQPMessage
         $handlerStub
             ->getMessage()

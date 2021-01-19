@@ -65,11 +65,12 @@ final class Producer extends ApplicationContract
         array $customConfig = []
     )
     {
-        $this->getBrokerClient()->rpcPublish(
+        {%- set bindingKey = amqpBindings.queue.name %}
+        return $this->getBrokerClient()->rpcPublish(
             $message,
             $handler,
             array_merge([
-
+                'bindingKey' => '{{ bindingKey }}'
             ], $customConfig)
         );
     }

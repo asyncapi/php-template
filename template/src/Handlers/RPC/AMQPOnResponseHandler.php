@@ -22,5 +22,6 @@ class AMQPOnResponseHandler extends RPCHandlerContract
         if ($message->get('correlation_id') == $this->getCorrelationId()) {
             $this->setMessage($message);
         }
+        return true;
     }
 }

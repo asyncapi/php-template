@@ -241,7 +241,9 @@ class AMQPBrokerClient implements BrokerClientContract
         $amqpMessage = $message->getPayload();
         $amqpMessage->set('reply_to', $queue);
         if(!$amqpMessage->has('correlation_id')) {
-            $amqpMessage->set('correlation_id', Uuid::uuid4()->toString());
+            $correlationId = Uuid::uuid4()->toString();
+            $amqpMessage->set('correlation_id', $correlationId);
+            $handler->setCorrelationId($correlationId);
         }
 
         $this->channel->basic_publish($amqpMessage, '', $bindingKey);
