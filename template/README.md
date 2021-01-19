@@ -1,26 +1,28 @@
 # BrokerAPI
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
+[//]: # "[![Latest Version on Packagist][ico-version]][link-packagist]"
+
 [![Software License][ico-license]](../LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
-[![Total Downloads][ico-downloads]][link-downloads]
 
-**Note:** Replace ```Emiliano Zublena``` ```emilianozublena``` ```https://github.com/emilianozublena``` ```emiliano@givingassistant.org``` ```GA``` ```BrokerAPI``` ```This is a high level API for message-driven communications through RMQ``` with their correct values in [README.md](README.md), [CHANGELOG.md](../CHANGELOG.md), [CONTRIBUTING.md](../CONTRIBUTING.md), [LICENSE.md](../LICENSE.md) and [composer.json](composer.json) files, then delete this line. You can run `$ php prefill.php` in the command line to make all replacements at once. Delete the file prefill.php as well.
+[//]: # "[![Build Status][ico-travis]][link-travis]"
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+[//]: # "[![Coverage Status][ico-scrutinizer]][link-scrutinizer]"
+
+[//]: # "[![Quality Score][ico-code-quality]][link-code-quality]"
+
+[//]: # "[![Total Downloads][ico-downloads]][link-downloads]"
+
+
+BrokerAPI is a wrapper for Message-driven API's built on top of most used industry plugins such as [PHP AMQP lib](https://packagist.org/packages/php-amqplib/php-amqplib) for RabbitMQ.
+It is built for usage altogether with [AsyncAPI specs and generators](https://github.com/asyncapi/generator)
 
 ## Structure
 
-If any of the following are applicable to your project, then the directory structure should follow industry best practices by being named the following.
+The structure for this plugin is as follows
 
 ```
-bin/        
-build/
-docs/
-config/
+configs/
+examples/
 src/
 tests/
 vendor/
@@ -29,28 +31,49 @@ vendor/
 
 ## Install
 
-Via Composer
+You need to have the asyncapi/generator installed and a valid AsyncAPI specification file.
 
 ``` bash
-$ composer require GA/BrokerAPI
+$ npm install -g @asyncapi/generator
 ```
 
 ## Usage
+Once you hvae the generator installed, you can try to generate code from any valid AsyncAPI file
 
-``` php
-$skeleton = new GA\BrokerAPI();
-echo $skeleton->echoPhrase('Hello, League!');
+``` bash
+./utilities/generate.sh -o {output} -s {sourceYamlFile}
+```
+
+Refer to the examples folder for further details on PHP usage
+``` bash
+$brokerAPI = new BrokerAPI();
+$factory = $brokerAPI->init();
+
+/** @var \{{ params.packageName }}\BrokerAPI\Applications\Producer $producer */
+$producer = $factory->createApplication(
+    PRODUCER_KEY,
+    [
+        BROKER_HOST_KEY         => 'localhost',
+        BROKER_USER_KEY         => 'guest',
+        BROKER_PASSWORD_KEY     => 'guest',
+        BROKER_PORT_KEY         => '5672',
+        BROKER_VIRTUAL_HOST_KEY => '/',
+    ]
+);
+
+$message = $factory->createMessage(
+    Merchant::class,
+    [
+        'id' => 1,
+    ]
+);
+
+$producer->requestMerchantById($message);
 ```
 
 ## Change log
 
 Please see [CHANGELOG](../CHANGELOG.md) for more information on what has changed recently.
-
-## Testing
-
-``` bash
-$ composer test
-```
 
 ## Contributing
 

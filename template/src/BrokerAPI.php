@@ -1,6 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
+ * This is the single entry point for the BrokerAPI.
+ * This class will be in charge of instantiating whatever Factory is needed
+ * depending on what's the default protocol on async api file
+ * This default protocol can be overwritten by just sending it while instantiating this class
  * User: emiliano
  * Date: 7/1/21
  * Time: 10:41

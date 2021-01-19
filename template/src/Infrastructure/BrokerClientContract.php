@@ -1,6 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Interface for all Broker Clients.
+ * Broker clients are an abstraction for any underlying library used to communicate with brokers
+ * This abstraction is a Wrapper
+ * For AMQP => PHP AMQP Lib
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 11:11

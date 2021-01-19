@@ -1,6 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Base interface for all Applications
+ * In BrokerAPI applications can either be Producers or Consumers
+ * (depending on message protocol these often get called as publishers/subscribers)
+ * Application classes should never be extended
+ *
  * User: emiliano
  * Date: 7/1/21
  * Time: 14:38

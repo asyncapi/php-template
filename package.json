@@ -8,8 +8,7 @@
     "release": "semantic-release",
     "get-version": "echo $npm_package_version",
     "gen-readme-toc": "markdown-toc -i README.md",
-    "lint": "eslint --max-warnings 0 --fix --config .eslintrc .",
-    "generate": "./utilities/generate.sh"
+    "lint": "eslint --max-warnings 0 --fix --config .eslintrc ."
   },
   "keywords": [
     "asyncapi",

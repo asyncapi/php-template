@@ -1,6 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Interface that describes the AbstractFactory, refer to pattern design for further clarification
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 11:35

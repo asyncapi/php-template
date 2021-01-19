@@ -1,19 +1,18 @@
 {
-    "name": "giving_assistant/broker-api",
+    "name": "asyncapi/broker-api",
     "type": "library",
     "description": "This is a high level API for message-driven communications to be used as template in AsyncAPI specs",
     "keywords": [
-        "giving_assistant",
+        "asyncapi",
         "broker-api"
     ],
-    "homepage": "https://github.com/giving_assistant/broker-api",
+    "homepage": "https://github.com/asyncapi/broker-api",
     "license": "MIT",
     "authors": [
         {
             "name": "Emiliano Zublena",
-            "email": "emiliano@givingassistant.org",
-            "homepage": "https://givingassistant.org",
-            "role": "Lead Backend Engineer"
+            "email": "ezublena@gmail.com",
+            "role": "Software Engineer"
         }
     ],
     "require": {
@@ -32,7 +31,7 @@
             "{{ params.packageName }}\\BrokerAPI\\": "src"
         },
         "files": [
-            "src/consts.php"
+            "configs/consts.php"
         ]
     },
     "autoload-dev": {

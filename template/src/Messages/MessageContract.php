@@ -1,6 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Base contract for all messages in BrokerAPI.
+ * Messages are constructed from the messages schema in async api
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 11:03

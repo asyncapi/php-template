@@ -1,6 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
+ * This class is used by a Consumer as a means to implement business logic "OnRequest"
+ * From any given RPC client (Publisher)
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 11:03

@@ -1,6 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
+ * AMQPFactory is a concretion of our abstractfactory.
+ * It's responsibility is to abstract the instantiation process for all AMQP-related classes
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 11:39

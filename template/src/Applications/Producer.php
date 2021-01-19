@@ -1,6 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Producer application is the single final class that you should obtain from concrete factory
+ * This application will have methods for each channel/operation and you should only
+ * pass messages and handlers that will implement any business logic needed (eg: rpc calls)
+ * Producer = Publisher
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 20:22

@@ -1,6 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
+ * This class is used by a Producer as a means to implement business logic "OnResponse"
+ * From any given RPC server (Worker)
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 11:03

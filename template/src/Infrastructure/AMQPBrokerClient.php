@@ -1,6 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Wrapper for the PHP AMQP Lib as a means to abstract any protocol-specific methods
+ * from all outer classes that need to work with those.
+ *
  * User: emiliano
  * Date: 30/12/20
  * Time: 14:37
