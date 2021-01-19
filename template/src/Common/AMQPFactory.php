@@ -102,11 +102,13 @@ class AMQPFactory implements FactoryContract
     /**
      * @param $messageType
      * @param array $properties
+     * @param array $brokerMessageProperties
      * @return MessageContract
      */
     public function createMessage(
         $messageType,
-        array $properties = []
+        array $properties = [],
+        array $brokerMessageProperties = []
     ): MessageContract {
         /** @var MessageContract $message */
         $message = new $messageType();
@@ -115,9 +117,20 @@ class AMQPFactory implements FactoryContract
             $setter = $setters[$property];
             $message->$setter($value);
         }
+        /**
+         * @var $correlationId
+         * @var string $replyTo
+         */
+        extract($brokerMessageProperties);
         $message
             ->setPayload(
-                new AMQPMessage(json_encode($message))
+                new AMQPMessage(
+                    json_encode($message),
+                    [
+                        'correlation_id' => $correlationId ?? null,
+                        'reply_to'       => $replyTo ?? null,
+                    ]
+                )
             );
 
         return $message;

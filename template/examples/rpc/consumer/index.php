@@ -1,13 +1,13 @@
 <?php
-require "../../vendor/autoload.php";
-require "Handlers/ExampleHandler.php";
+require "../../../vendor/autoload.php";
+require "Handlers/RPCExampleHandler.php";
 
 use {{ params.packageName }}\BrokerAPI\BrokerAPI;
 
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
 
-/** @var \GA\BrokerAPI\Applications\Consumer $consumer */
+/** @var \{{ params.packageName }}\BrokerAPI\Applications\Consumer $consumer */
 $consumer = $factory->createApplication(
     CONSUMER_KEY,
     [
@@ -18,5 +18,5 @@ $consumer = $factory->createApplication(
         BROKER_VIRTUAL_HOST_KEY => '/',
     ]
 );
-$handler = new Consumer\Examples\ExampleHandler();
-$consumer->retrieveMerchantById($handler);
+$handler = new \Examples\RPC\Consumer\Handlers\RPCExampleHandler();
+$consumer->retrieveMerchantByIdRPC($handler);

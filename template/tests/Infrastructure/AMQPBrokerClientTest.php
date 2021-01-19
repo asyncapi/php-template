@@ -6,11 +6,14 @@
  * Time: 14:42
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Tests\Infrastructure\AMQP;
+namespace {{ params.packageName }}\BrokerAPI\Tests\Infrastructure;
 
 use {{ params.packageName }}\BrokerAPI\Infrastructure\AMQPBrokerClient;
 use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
 use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnResponseHandler;
+use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnRequestHandler;
+use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -124,7 +127,7 @@ class AMQPBrokerClientTest extends BaseTest
         $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
 
         //When we try to publish
-        $result = $amqpBrokerClient->publishToExchange($messageStub->reveal(), $settings);
+        $result = $amqpBrokerClient->basicPublish($messageStub->reveal(), $settings);
 
         //Then we assert we got a valid bool back
         $this->assertTrue($result);
@@ -139,6 +142,11 @@ class AMQPBrokerClientTest extends BaseTest
         //Given we have a valid amqp connection, broker instance and extracted settings
         $amqpStreamConnectionStub = $this->prophesize(AMQPStreamConnection::class);
         $amqpChannelStub = $this->prophesize(AMQPChannel::class);
+        $handlerStub = $this->prophesize(HandlerContract::class);
+        $callback = [
+            $handlerStub->reveal(),
+            'handle'
+        ];
         /**
          * @var string|null $consumerTag
          * @var bool|null $noLocal
@@ -184,7 +192,7 @@ class AMQPBrokerClientTest extends BaseTest
                 $noAck ?? false,
                 $exclusive ?? false,
                 $noWait ?? false,
-                $callback ?? null,
+                $callback,
                 $ticket ?? null,
                 $arguments ?? []
             )
@@ -209,10 +217,193 @@ class AMQPBrokerClientTest extends BaseTest
         $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
 
         //When we try to consume messages
-        $amqpBrokerClient->consumeThroughExchange($settings);
+        $amqpBrokerClient->basicConsume(
+            $handlerStub->reveal(),
+            $settings
+        );
 
         //Then we assert we have the worker running
         //prophecy fulfilled, means worker ran just fine :)
+    }
+
+    /**
+     * @test
+     */
+    public function it_makes_rpc_calls_and_waits_for_response()
+    {
+        //Given we have a valid broker client and message
+        $amqpStreamConnectionStub = $this->prophesize(AMQPStreamConnection::class);
+        $amqpChannelStub = $this->prophesize(AMQPChannel::class);
+        $messageStub = $this->prophesize(MessageContract::class);
+        $amqpMessageStub = $this->prophesize(AMQPMessage::class);
+        $handlerStub = $this->prophesize(AMQPOnResponseHandler::class);
+
+        //And a set of declared prophecies to be fulfilled
+        //set correlation id
+        $handlerStub
+            ->setCorrelationId(Argument::any())
+            ->shouldBeCalledOnce();
+        //$handler->getMessage() twice, second return AMQPMessage
+        $handlerStub
+            ->getMessage()
+            ->shouldBeCalledTimes(2)
+            ->willReturn(null, $amqpMessageStub->reveal());
+        //queue_declare
+        $amqpChannelStub
+            ->queue_declare(
+                '',
+                false,
+                false,
+                true,
+                false
+            )
+            ->shouldBeCalledOnce();
+        //basic_consume
+        $amqpChannelStub
+            ->basic_consume(
+                null,
+                '',
+                false,
+                true,
+                false,
+                false,
+                [
+                    $handlerStub->reveal(),
+                    'handle'
+                ]
+            )
+            ->shouldBeCalledOnce();
+        //check if correlation id is set
+        $amqpMessageStub
+            ->has('correlation_id')
+            ->shouldBeCalledOnce()
+            ->willReturn(false);
+        //set it
+        $amqpMessageStub
+            ->set('correlation_id', Argument::type('string'))
+            ->shouldBeCalledOnce();
+        //set reply to
+        $amqpMessageStub
+            ->set('reply_to', Argument::any())
+            ->shouldBeCalledOnce();
+        //$message->getPayload()
+        $messageStub
+            ->getPayload()
+            ->shouldBeCalledOnce()
+            ->willReturn($amqpMessageStub->reveal());
+        //basic_publish
+        $amqpChannelStub
+            ->basic_publish($amqpMessageStub->reveal(), '', Argument::any())
+            ->shouldBeCalledOnce();
+        //wait till response comes back
+        $amqpChannelStub
+            ->wait()
+            ->shouldBeCalledOnce();
+        //close channel
+        $amqpChannelStub
+            ->close()
+            ->shouldBeCalledOnce();
+        //connect
+        $amqpStreamConnectionStub
+            ->channel(Argument::any())
+            ->shouldBeCalledOnce()
+            ->willReturn($amqpChannelStub->reveal());
+        //close
+        $amqpStreamConnectionStub
+            ->close(Argument::any())
+            ->shouldBeCalledOnce();
+
+        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+
+        //When we send it through an rpc call
+        $receivedMessage = $amqpBrokerClient->rpcPublish(
+            $messageStub->reveal(),
+            $handlerStub->reveal(),
+            [
+                'bindingKey' => ''
+            ]
+        );
+        //Then we assert we got something back and callback executed
+        $this->assertEquals($amqpMessageStub->reveal(), $receivedMessage);
+    }
+
+    /** @test */
+    public function it_receives_rpc_calls_and_sends_response_back()
+    {
+        //Given we have a valid broker client
+        $amqpStreamConnectionStub = $this->prophesize(AMQPStreamConnection::class);
+        $amqpChannelStub = $this->prophesize(AMQPChannel::class);
+        $handlerStub = $this->prophesize(AMQPOnRequestHandler::class);
+        $callback = [
+            $handlerStub->reveal(),
+            'handle'
+        ];
+        $queueName = "queueName";
+        $prefetchCount = 1;
+
+        //queue_declare
+        $amqpChannelStub
+            ->queue_declare(
+                $queueName,
+                false,
+                false,
+                false,
+                false
+            )
+            ->shouldBeCalledOnce();
+        //basic_qos
+        $amqpChannelStub
+            ->basic_qos(
+                null,
+                $prefetchCount,
+                null
+            )
+            ->shouldBeCalledOnce();
+        //basic_consume
+        $amqpChannelStub
+            ->basic_consume(
+                $queueName,
+                '',
+                false,
+                false,
+                false,
+                false,
+                $callback
+            )
+            ->shouldBeCalledOnce();
+        //is_consuming two times
+        $amqpChannelStub
+            ->is_consuming()
+            ->shouldBeCalledTimes(2)
+            ->willReturn(true, false);
+        //wait
+        $amqpChannelStub
+            ->wait()
+            ->shouldBeCalledOnce();
+        //channel close
+        $amqpChannelStub
+            ->close()
+            ->shouldBeCalledOnce();
+        //conn open
+        $amqpStreamConnectionStub
+            ->channel(Argument::any())
+            ->shouldBeCalledOnce()
+            ->willReturn($amqpChannelStub->reveal());
+        //conn close
+        $amqpStreamConnectionStub
+            ->close()
+            ->shouldBeCalledOnce();
+
+        //When we try to receive rpc calls and send response back
+        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+        $amqpBrokerClient->rpcConsume(
+            $handlerStub->reveal(),
+            [
+                'queueName' => $queueName
+            ]
+        );
+
+        //Then we assert prophecy fulfilled :)
     }
 
     public function brokerClientConfigArray()
@@ -259,7 +450,6 @@ class AMQPBrokerClientTest extends BaseTest
                     'noAck'        => false,
                     'exclusive'    => false,
                     'noWait'       => 'false',
-                    'callback'     => null,
                     'ticket'       => null,
                     'arguments'    => [],
                     'exchangeName' => '',

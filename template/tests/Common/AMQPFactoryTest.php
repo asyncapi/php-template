@@ -16,6 +16,8 @@ use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
 use {{ params.packageName }}\BrokerAPI\Applications\Producer;
 use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
 use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\RPC\RPCHandlerContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnResponseHandler;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Prophecy\Argument;
@@ -123,15 +125,10 @@ class AMQPFactoryTest extends BaseTest
         $expectedHandler
     ) {
         //Given we have a valid factory
-        $factory = $this->prophesize(AMQPFactory::class);
-        $instantiatedHandler = $this->prophesize($requestedHandler);
-        $factory
-            ->createHandler($requestedHandler)
-            ->shouldBeCalledOnce()
-            ->willReturn($instantiatedHandler->reveal());
+        $factory = new AMQPFactory();
 
         //When we request for a given handler
-        $instantiatedHandler = $factory->reveal()->createHandler($requestedHandler);
+        $instantiatedHandler = $factory->createHandler($requestedHandler);
 
         //Then we assert we got the handler expected back
         $this->assertTrue($instantiatedHandler instanceof $expectedHandler);
@@ -141,8 +138,8 @@ class AMQPFactoryTest extends BaseTest
     {
         return [
             [
-                'requestedHandler' => HandlerContract::class,
-                'expectedHandler'  => HandlerContract::class,
+                'requestedHandler' => AMQPOnResponseHandler::class,
+                'expectedHandler'  => RPCHandlerContract::class,
             ],
         ];
     }

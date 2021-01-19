@@ -12,45 +12,78 @@
 namespace {{ params.packageName }}\BrokerAPI\Applications;
 
 use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\RPC\RPCHandlerContract;
 
 final class Consumer extends ApplicationContract
 {
 {%- for channelName, channel in asyncapi.channels() %}
 {%- if channel.hasSubscribe() %}
-{%- set methodName = channel.subscribe().id() %}
-    public function {{ methodName }}(HandlerContract $handler)
-    {
-        {%- set exchangeName = channel.subscribe().bindings().amqp.exchange.name %}
-        {%- set exchangeType = channel.subscribe().bindings().amqp.exchange.type %}
-        {%- set exchangeDurable = channel.subscribe().bindings().amqp.exchange.durable %}
-        {%- set exchangeAutoDelete = channel.subscribe().bindings().amqp.exchange.autoDelete %}
-        {%- set queueDurable = channel.subscribe().bindings().amqp.queue.durable %}
-        {%- set queueExclusive = channel.subscribe().bindings().amqp.queue.exclusive %}
-        {%- set queueBindingKey = channel.subscribe().bindings().amqp.queue.bindingKey %}
-        {%- set queueAutoDelete = channel.subscribe().bindings().amqp.queue.autoDelete %}
-        $config = [
-            'queue'           => '',
-            'consumerTag'     => '',
-            'noLocal'         => false,
-            'noAck'           => false,
-            'exclusive'       => {{queueExclusive}},
-            'noWait'          => false,
-            'callback'        => function ($msg) use ($handler) {
-                return $handler->handle($msg);
-            },
-            'ticket'          => 'null',
-            'arguments'       => [],
-            'exchangeName'    => '{{ exchangeName }}',
-            'exchangeType'    => '{{ exchangeType }}',
-            'exchangeDurable' => {{ exchangeDurable }},
-            'exchangeAutoDelete' => {{ exchangeAutoDelete }},
-            'queueDurable'    => {{ queueDurable }},
-            'queueAutoDelete' => {{ queueAutoDelete }},
-            'bindingKey'      => '{{ queueBindingKey }}',
-        ];
+    {%- set methodName = channel.subscribe().id() %}
+    {%- set methodDescription = channel.subscribe().description() %}
+    {%- set amqpBindings = channel.subscribe().bindings().amqp %}
+    {%- if amqpBindings.type == 'basic' %}
+    /**
+     * {{ methodDescription }}
+     *
+     * @param HandlerContract $handler
+     * @param array $customConfig
+     */
+        public function {{ methodName }}(
+            HandlerContract $handler,
+            array $customConfig = []
+        )
+        {
+            {%- set exchangeName = amqpBindings.exchange.name %}
+            {%- set exchangeType = amqpBindings.exchange.type %}
+            {%- set exchangeDurable = amqpBindings.exchange.durable %}
+            {%- set exchangeAutoDelete = amqpBindings.exchange.autoDelete %}
+            {%- set queueDurable = amqpBindings.queue.durable %}
+            {%- set queueExclusive = amqpBindings.queue.exclusive %}
+            {%- set queueBindingKey = amqpBindings.queue.bindingKey %}
+            {%- set queueAutoDelete = amqpBindings.queue.autoDelete %}
+            $config = array_merge([
+                'queue'           => '',
+                'consumerTag'     => '',
+                'noLocal'         => false,
+                'noAck'           => false,
+                'exclusive'       => {{queueExclusive}},
+                'noWait'          => false,
+                'ticket'          => 'null',
+                'arguments'       => [],
+                'exchangeName'    => '{{ exchangeName }}',
+                'exchangeType'    => '{{ exchangeType }}',
+                'exchangeDurable' => {{ exchangeDurable }},
+                'exchangeAutoDelete' => {{ exchangeAutoDelete }},
+                'queueDurable'    => {{ queueDurable }},
+                'queueAutoDelete' => {{ queueAutoDelete }},
+                'bindingKey'      => '{{ queueBindingKey }}',
+            ], $customConfig);
 
-        $this->getBrokerClient()->consumeThroughExchange($config);
-    }
+            $this->getBrokerClient()->basicConsume($handler, $config);
+        }
+    {%- elseif amqpBindings.type == 'rpc' %}
+
+    /**
+     * {{ methodDescription }}
+     *
+     * @param RPCHandlerContract $handler
+     * @param array $customConfig
+     */
+        public function {{ methodName }}(
+            RPCHandlerContract $handler,
+            array $customConfig = []
+        )
+        {
+            {%- set queueName = amqpBindings.queue.name %}
+            $config = array_merge([
+                'queueName' => '{{ queueName }}'
+            ], $customConfig);
+            $this->getBrokerClient()->rpcConsume(
+                $handler,
+                $config
+            );
+        }
+    {%- endif %}
 {%- endif %}
 {%- endfor %}
 }

@@ -1,9 +1,9 @@
 <?php
 
-namespace Consumer\Examples;
+namespace Examples\Basic\Consumer\Handlers;
 
-use GA\BrokerAPI\Handlers\HandlerContract;
-use GA\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ExampleHandler implements HandlerContract
