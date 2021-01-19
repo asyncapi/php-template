@@ -18,7 +18,8 @@
     "require": {
         "php" : "~7.4",
         "php-amqplib/php-amqplib": "^2.12",
-        "ramsey/uuid": "^4.1"
+        "ramsey/uuid": "^4.1",
+        "vlucas/phpdotenv": "^5.2"
     },
     "require-dev": {
         "phpspec/prophecy": "^1.12",

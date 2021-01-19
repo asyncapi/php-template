@@ -11,6 +11,7 @@
 
 namespace {{ params.packageName }}\BrokerAPI;
 
+use Dotenv\Dotenv;
 use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
 use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
 
@@ -30,6 +31,7 @@ final class BrokerAPI
 
     public function init(): FactoryContract
     {
+        $this->initDotEnv();
         $factory = null;
         switch ($this->protocol) {
             case AMQP_PROTOCOL_KEY:
@@ -38,5 +40,16 @@ final class BrokerAPI
         }
 
         return $factory;
+    }
+
+    private function initDotEnv()
+    {
+        try {
+            $dotenv = Dotenv::createImmutable(__DIR__, './../.env');
+            $dotenv->load();
+        } catch (\Throwable $t) {
+            //if no file is found, throw no errors
+            return false;
+        }
     }
 }
