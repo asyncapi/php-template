@@ -2,6 +2,7 @@
 
 namespace Examples\RPC\Consumer\Handlers;
 
+use PhpAmqpLib\Message\AMQPMessage;
 use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnRequestHandler;
 use {{ params.packageName }}\BrokerAPI\Messages\Merchant;
 
@@ -16,8 +17,11 @@ class RPCExampleHandler extends AMQPOnRequestHandler
 {
     protected function createMessageBody(): string
     {
+        /** @var AMQPMessage $message */
+        $message = $this->getMessage();
+        $payload = json_decode($message->getBody());
         $merchant = new Merchant();
-        $merchant->setId(1);
+        $merchant->setId($payload->id);
         $merchant->setName('Some merchant');
         return json_encode($merchant);
     }

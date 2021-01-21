@@ -22,6 +22,7 @@ abstract class AMQPOnRequestHandler extends RPCHandlerContract
      */
     public function handle($message): bool
     {
+        $this->setMessage($message);
         $amqpMesssage = new AMQPMessage(
             $this->createMessageBody(),
             ['correlation_id' => $message->get('correlation_id')]
