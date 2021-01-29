@@ -27,6 +27,13 @@ template/
 utilities/
 ```
 
+## Requirements
+You need to have the following versions of npm+node installed:
+
+```
+node v14.15.1
+npm v6.14.8
+```
 
 ## Install
 
