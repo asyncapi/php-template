@@ -31,8 +31,8 @@ utilities/
 You need to have the following versions of npm+node installed:
 
 ```
-node v14.15.1
-npm v6.14.8
+v12.16+ < Node.js < 15
+v6.13.7+ < npm < 7
 ```
 
 ## Install
