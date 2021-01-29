@@ -10,7 +10,6 @@ template/build
 template/composer.lock
 template/vendor
 template/phpcs.xml
-template/phpunit.xml
 template/.phpunit.result.cache
 .env
 template/.env
