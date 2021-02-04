@@ -22,7 +22,7 @@ final class Producer extends ApplicationContract
     {%- set methodName = channel.publish().id() %}
     {%- set methodDescription = channel.publish().description() %}
     {%- set amqpBindings = channel.subscribe().bindings().amqp %}
-    {%- if amqpBindings.type == 'basic' %}
+    {%- if amqpBindings["x-type"] == 'basic' %}
     /**
      * {{ methodDescription }}
      *
@@ -56,7 +56,7 @@ final class Producer extends ApplicationContract
             ], $customConfig)
         );
     }
-    {%- elseif amqpBindings.type == 'rpc' %}
+    {%- elseif amqpBindings["x-type"] == 'rpc' %}
     /**
      * {{ methodDescription }}
      *

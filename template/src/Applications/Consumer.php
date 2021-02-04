@@ -21,7 +21,7 @@ final class Consumer extends ApplicationContract
     {%- set methodName = channel.subscribe().id() %}
     {%- set methodDescription = channel.subscribe().description() %}
     {%- set amqpBindings = channel.subscribe().bindings().amqp %}
-    {%- if amqpBindings.type == 'basic' %}
+    {%- if amqpBindings["x-type"] == 'basic' %}
     /**
      * {{ methodDescription }}
      *
@@ -61,7 +61,7 @@ final class Consumer extends ApplicationContract
 
             $this->getBrokerClient()->basicConsume($handler, $config);
         }
-    {%- elseif amqpBindings.type == 'rpc' %}
+    {%- elseif amqpBindings["x-type"] == 'rpc' %}
 
     /**
      * {{ methodDescription }}
