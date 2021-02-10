@@ -62,13 +62,13 @@ $producer = $factory->createApplication(
 );
 
 $message = $factory->createMessage(
-    Merchant::class,
+    Example::class,
     [
         'id' => 1,
     ]
 );
 
-$producer->requestMerchantById($message);
+$producer->requestExampleById($message);
 ```
 
 ## Change log
@@ -81,7 +81,7 @@ Please see [CONTRIBUTING](../CONTRIBUTING.md) and [CODE_OF_CONDUCT](../CODE_OF_C
 
 ## Security
 
-If you discover any security related issues, please email emiliano@givingassistant.org instead of using the issue tracker.
+If you discover any security related issues, please email ezublena@gmail.com instead of using the issue tracker.
 
 ## Credits
 
