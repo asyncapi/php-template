@@ -19,4 +19,4 @@ $consumer = $factory->createApplication(
     ]
 );
 $handler = new \Examples\Basic\Consumer\Handlers\ExampleHandler();
-$consumer->retrieveMerchantById($handler);
+$consumer->retrieveExampleById($handler);

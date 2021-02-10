@@ -55,7 +55,10 @@ class AMQPFactory implements FactoryContract
             );
         }
 
-        return new AMQPBrokerClient($this->brokerConnection);
+        return new AMQPBrokerClient(
+            $this->brokerConnection,
+            $this
+        );
     }
 
     /**

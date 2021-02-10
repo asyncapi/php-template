@@ -13,8 +13,9 @@
 namespace {{ params.packageName }}\BrokerAPI\Infrastructure;
 
 use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\RPCHandlerContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
 use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
 
 
 interface BrokerClientContract
@@ -30,6 +31,10 @@ interface BrokerClientContract
     public function connect();
 
     public function close();
+
+    public function setFactory(FactoryContract $factory): BrokerClientContract;
+
+    public function getFactory(): FactoryContract;
 
     /**
      * @param $message
@@ -47,20 +52,18 @@ interface BrokerClientContract
 
     /**
      * @param MessageContract $message
-     * @param RPCHandlerContract $handler
      * @param array $config
      * @return mixed
      */
     public function rpcPublish(
         MessageContract $message,
-        RPCHandlerContract $handler,
         array $config = []
     );
 
     /**
-     * @param RPCHandlerContract $handler
+     * @param AMQPRPCServerHandler $handler
      * @param array $config
      * @return mixed
      */
-    public function rpcConsume(RPCHandlerContract $handler, array $config = []);
+    public function rpcConsume(AMQPRPCServerHandler $handler, array $config = []);
 }

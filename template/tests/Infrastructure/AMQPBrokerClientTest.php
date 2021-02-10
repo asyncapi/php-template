@@ -11,13 +11,15 @@ namespace {{ params.packageName }}\BrokerAPI\Tests\Infrastructure;
 use {{ params.packageName }}\BrokerAPI\Infrastructure\AMQPBrokerClient;
 use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
 use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnResponseHandler;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnRequestHandler;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
 use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class AMQPBrokerClientTest extends BaseTest
 {
@@ -31,7 +33,8 @@ class AMQPBrokerClientTest extends BaseTest
         $amqpStreamConnectionStub = $this->prophesize(AMQPStreamConnection::class);
 
         //When we instantiate the broker client
-        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+        $factory = new AMQPFactory($amqpStreamConnectionStub->reveal());
+        $amqpBrokerClient = $factory->createBrokerClient();
 
         //Then we assert we get a valid AMQPStreamConnection back
         $this->assertTrue($amqpBrokerClient->getConnection() instanceof AMQPStreamConnection);
@@ -50,7 +53,8 @@ class AMQPBrokerClientTest extends BaseTest
             ->channel(Argument::any())
             ->willReturn($amqpChannelStub->reveal());
 
-        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+        $factory = new AMQPFactory($amqpStreamConnectionStub->reveal());
+        $amqpBrokerClient = $factory->createBrokerClient();
 
         //When we try to connect
         $channel = $amqpBrokerClient->connect();
@@ -124,7 +128,8 @@ class AMQPBrokerClientTest extends BaseTest
             ->close()
             ->shouldBeCalledOnce();
 
-        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+        $factory = new AMQPFactory($amqpStreamConnectionStub->reveal());
+        $amqpBrokerClient = $factory->createBrokerClient();
 
         //When we try to publish
         $result = $amqpBrokerClient->basicPublish($messageStub->reveal(), $settings);
@@ -214,7 +219,8 @@ class AMQPBrokerClientTest extends BaseTest
             ->close()
             ->shouldBeCalledOnce();
 
-        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+        $factory = new AMQPFactory($amqpStreamConnectionStub->reveal());
+        $amqpBrokerClient = $factory->createBrokerClient();
 
         //When we try to consume messages
         $amqpBrokerClient->basicConsume(
@@ -236,18 +242,10 @@ class AMQPBrokerClientTest extends BaseTest
         $amqpChannelStub = $this->prophesize(AMQPChannel::class);
         $messageStub = $this->prophesize(MessageContract::class);
         $amqpMessageStub = $this->prophesize(AMQPMessage::class);
-        $handlerStub = $this->prophesize(AMQPOnResponseHandler::class);
+        $factoryStub = $this->prophesize(AMQPFactory::class);
+        $handlerStub = $this->prophesize(AMQPRPCClientHandler::class);
 
         //And a set of declared prophecies to be fulfilled
-        //set correlation id
-        $handlerStub
-            ->setCorrelationId(Argument::any())
-            ->shouldBeCalledOnce();
-        //$handler->getMessage() twice, second return AMQPMessage
-        $handlerStub
-            ->getMessage()
-            ->shouldBeCalledTimes(2)
-            ->willReturn(null, $amqpMessageStub->reveal());
         //queue_declare
         $amqpChannelStub
             ->queue_declare(
@@ -286,6 +284,11 @@ class AMQPBrokerClientTest extends BaseTest
         $amqpMessageStub
             ->set('reply_to', Argument::any())
             ->shouldBeCalledOnce();
+        //get corr id
+        $amqpMessageStub
+            ->get('correlation_id')
+            ->shouldBeCalledOnce()
+            ->willReturn(Argument::type('string'));
         //$message->getPayload()
         $messageStub
             ->getPayload()
@@ -312,13 +315,27 @@ class AMQPBrokerClientTest extends BaseTest
         $amqpStreamConnectionStub
             ->close(Argument::any())
             ->shouldBeCalledOnce();
+        //factory
+        $handlerStub
+            ->setCorrelationId(Argument::type('string'))
+            ->shouldBeCalledOnce()
+            ->willReturn($handlerStub->reveal());
+        $handlerStub
+            ->getMessage()
+            ->shouldBeCalledTimes(2)
+            ->willReturn(null, $amqpMessageStub->reveal());
+        $factoryStub
+            ->createHandler(AMQPRPCClientHandler::class)
+            ->shouldBeCalledOnce()
+            ->willReturn($handlerStub->reveal());
 
-        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+        $factory = new AMQPFactory($amqpStreamConnectionStub->reveal());
+        $amqpBrokerClient = $factory->createBrokerClient();
+        $amqpBrokerClient->setFactory($factoryStub->reveal());
 
         //When we send it through an rpc call
         $receivedMessage = $amqpBrokerClient->rpcPublish(
             $messageStub->reveal(),
-            $handlerStub->reveal(),
             [
                 'bindingKey' => ''
             ]
@@ -333,7 +350,7 @@ class AMQPBrokerClientTest extends BaseTest
         //Given we have a valid broker client
         $amqpStreamConnectionStub = $this->prophesize(AMQPStreamConnection::class);
         $amqpChannelStub = $this->prophesize(AMQPChannel::class);
-        $handlerStub = $this->prophesize(AMQPOnRequestHandler::class);
+        $handlerStub = $this->prophesize(AMQPRPCServerHandler::class);
         $callback = [
             $handlerStub->reveal(),
             'handle'
@@ -395,7 +412,8 @@ class AMQPBrokerClientTest extends BaseTest
             ->shouldBeCalledOnce();
 
         //When we try to receive rpc calls and send response back
-        $amqpBrokerClient = new AMQPBrokerClient($amqpStreamConnectionStub->reveal());
+        $factory = new AMQPFactory($amqpStreamConnectionStub->reveal());
+        $amqpBrokerClient = $factory->createBrokerClient();
         $amqpBrokerClient->rpcConsume(
             $handlerStub->reveal(),
             [

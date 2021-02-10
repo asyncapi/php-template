@@ -2,7 +2,7 @@
 require "../../../vendor/autoload.php";
 
 use {{ params.packageName }}\BrokerAPI\BrokerAPI;
-use {{ params.packageName }}\BrokerAPI\Messages\Merchant;
+use {{ params.packageName }}\BrokerAPI\Messages\Example;
 
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
@@ -20,10 +20,9 @@ $producer = $factory->createApplication(
 );
 
 $message = $factory->createMessage(
-    Merchant::class,
+    Example::class,
     [
         'id' => 1,
     ]
 );
-
-$producer->requestMerchantById($message);
+$producer->requestExampleById($message);

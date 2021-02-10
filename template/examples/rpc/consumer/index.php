@@ -19,4 +19,4 @@ $consumer = $factory->createApplication(
     ]
 );
 $handler = new \Examples\RPC\Consumer\Handlers\RPCExampleHandler();
-$consumer->retrieveMerchantByIdRPC($handler);
+$consumer->retrieveExampleByIdRPC($handler);

@@ -12,7 +12,7 @@
 namespace {{ params.packageName }}\BrokerAPI\Applications;
 
 use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\RPCHandlerContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
 
 final class Consumer extends ApplicationContract
 {
@@ -70,7 +70,7 @@ final class Consumer extends ApplicationContract
      * @param array $customConfig
      */
         public function {{ methodName }}(
-            RPCHandlerContract $handler,
+            AMQPRPCServerHandler $handler,
             array $customConfig = []
         )
         {

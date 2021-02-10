@@ -3,8 +3,9 @@
 namespace Examples\RPC\Consumer\Handlers;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnRequestHandler;
-use {{ params.packageName }}\BrokerAPI\Messages\Merchant;
+use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
+use {{ params.packageName }}\BrokerAPI\Messages\Example;
 
 /**
  * Created by PhpStorm.
@@ -13,16 +14,30 @@ use {{ params.packageName }}\BrokerAPI\Messages\Merchant;
  * Time: 19:02
  */
 
-class RPCExampleHandler extends AMQPOnRequestHandler
+class RPCExampleHandler extends AMQPRPCServerHandler
 {
-    protected function createMessageBody(): string
+    /**
+     * @param AMQPMessage $message
+     * @return bool
+     */
+    public function handle($message): bool
     {
-        /** @var AMQPMessage $message */
-        $message = $this->getMessage();
+        /** @var AMQPFactory $factory */
         $payload = json_decode($message->getBody());
-        $merchant = new Merchant();
-        $merchant->setId($payload->id);
-        $merchant->setName('Some merchant');
-        return json_encode($merchant);
+        $factory = new AMQPFactory();
+        $newMessage = $factory->createMessage(
+            Example::class,
+            [
+                'id'   => $payload->id,
+                'name' => 'Some merchant',
+            ],
+            [
+                'correlationId' => $message->get('correlation_id'),
+                'replyTo'       => $message->get('reply_to'),
+            ]
+        );
+
+        $this->sendRPCResponse($message, $newMessage);
+        return true;
     }
 }

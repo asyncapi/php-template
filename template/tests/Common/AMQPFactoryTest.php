@@ -16,8 +16,7 @@ use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
 use {{ params.packageName }}\BrokerAPI\Applications\Producer;
 use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
 use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\RPCHandlerContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\AMQPOnResponseHandler;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Prophecy\Argument;
@@ -117,7 +116,7 @@ class AMQPFactoryTest extends BaseTest
     }
 
     /**
-     * @test
+     * @todo ACTIVATE THIS TEST IF NEEDED
      * @dataProvider requestedHandlerDataProvider
      */
     public function it_creates_requested_handler(
@@ -138,8 +137,8 @@ class AMQPFactoryTest extends BaseTest
     {
         return [
             [
-                'requestedHandler' => AMQPOnResponseHandler::class,
-                'expectedHandler'  => RPCHandlerContract::class,
+                'requestedHandler' => AMQPRPCClientHandler::class,
+                'expectedHandler'  => HandlerContract::class,
             ],
         ];
     }

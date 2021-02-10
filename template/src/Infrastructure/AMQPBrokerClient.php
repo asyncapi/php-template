@@ -15,8 +15,10 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Ramsey\Uuid\Uuid;
 use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\RPCHandlerContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
 use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
+use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
 
 class AMQPBrokerClient implements BrokerClientContract
 {
@@ -24,15 +26,22 @@ class AMQPBrokerClient implements BrokerClientContract
     private $connection;
     /** @var AMQPChannel $channel */
     private $channel;
+    /** @var FactoryContract $factory */
+    private $factory;
 
     /**
      * AMQPBrokerClient constructor.
      * @param AMQPStreamConnection|null $connection
+     * @param FactoryContract|null $factory
      */
     public function __construct(
-        AMQPStreamConnection $connection = null
+        AMQPStreamConnection $connection = null,
+        FactoryContract $factory = null
     ) {
         $this->setConnection($connection);
+        if(!is_null($factory)) {
+            $this->setFactory($factory);
+        }
     }
 
     /**
@@ -69,6 +78,24 @@ class AMQPBrokerClient implements BrokerClientContract
     {
         $this->channel->close();
         $this->connection->close();
+    }
+
+    /**
+     * @param FactoryContract $factory
+     * @return BrokerClientContract
+     */
+    public function setFactory(FactoryContract $factory): BrokerClientContract
+    {
+        $this->factory = $factory;
+        return $this;
+    }
+
+    /**
+     * @return AMQPStreamConnection
+     */
+    public function getFactory(): FactoryContract
+    {
+        return $this->factory;
     }
 
     /**
@@ -202,14 +229,12 @@ class AMQPBrokerClient implements BrokerClientContract
 
     /**
      * @param MessageContract $message
-     * @param RPCHandlerContract $handler
      * @param array $config
      * @return AMQPMessage
      * @throws ErrorException
      */
     public function rpcPublish(
         MessageContract $message,
-        RPCHandlerContract $handler,
         array $config = []
     ): AMQPMessage
     {
@@ -218,6 +243,8 @@ class AMQPBrokerClient implements BrokerClientContract
          */
         extract($config);
         $this->connect();
+        /** @var AMQPRPCClientHandler $rpcClientHandler */
+        $rpcClientHandler = $this->getFactory()->createHandler(AMQPRPCClientHandler::class);
 
         list($queue) = $this->channel->queue_declare(
             "",
@@ -226,6 +253,16 @@ class AMQPBrokerClient implements BrokerClientContract
             true,
             false
         );
+
+        /** @var AMQPMessage $amqpMessage */
+        $amqpMessage = $message->getPayload();
+        $amqpMessage->set('reply_to', $queue);
+        if(!$amqpMessage->has('correlation_id')) {
+            $correlationId = Uuid::uuid4()->toString();
+            $amqpMessage->set('correlation_id', $correlationId);
+        }
+        $rpcClientHandler->setCorrelationId($amqpMessage->get('correlation_id'));
+
         $this->channel->basic_consume(
             $queue,
             '',
@@ -234,23 +271,14 @@ class AMQPBrokerClient implements BrokerClientContract
             false,
             false,
             [
-                $handler,
-                'handle',
+                $rpcClientHandler,
+                'handle'
             ]
         );
 
-        /** @var AMQPMessage $amqpMessage */
-        $amqpMessage = $message->getPayload();
-        $amqpMessage->set('reply_to', $queue);
-        if(!$amqpMessage->has('correlation_id')) {
-            $correlationId = Uuid::uuid4()->toString();
-            $amqpMessage->set('correlation_id', $correlationId);
-            $handler->setCorrelationId($correlationId);
-        }
-
         $this->channel->basic_publish($amqpMessage, '', $bindingKey);
 
-        while (!$amqpRPCMessage = $handler->getMessage()) {
+        while (!$amqpRPCMessage = $rpcClientHandler->getMessage()) {
             $this->channel->wait();
         }
 
@@ -260,12 +288,12 @@ class AMQPBrokerClient implements BrokerClientContract
     }
 
     /**
-     * @param RPCHandlerContract $handler
+     * @param AMQPRPCServerHandler $handler
      * @param array $config
      * @return bool
      */
     public function rpcConsume(
-        RPCHandlerContract $handler,
+        AMQPRPCServerHandler $handler,
         array $config = []
     ): bool
     {

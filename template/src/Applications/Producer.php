@@ -13,7 +13,7 @@
 namespace {{ params.packageName }}\BrokerAPI\Applications;
 
 use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\RPC\RPCHandlerContract;
+use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
 
 final class Producer extends ApplicationContract
 {
@@ -21,7 +21,7 @@ final class Producer extends ApplicationContract
 {%- if channel.hasPublish() %}
     {%- set methodName = channel.publish().id() %}
     {%- set methodDescription = channel.publish().description() %}
-    {%- set amqpBindings = channel.subscribe().bindings().amqp %}
+    {%- set amqpBindings = channel.publish().bindings().amqp %}
     {%- if amqpBindings["x-type"] == 'basic' %}
     /**
      * {{ methodDescription }}
@@ -65,14 +65,12 @@ final class Producer extends ApplicationContract
      */
     public function {{ methodName }}(
         MessageContract $message,
-        RPCHandlerContract $handler,
         array $customConfig = []
     )
     {
         {%- set bindingKey = amqpBindings.queue.name %}
         return $this->getBrokerClient()->rpcPublish(
             $message,
-            $handler,
             array_merge([
                 'bindingKey' => '{{ bindingKey }}'
             ], $customConfig)

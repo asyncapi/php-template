@@ -1,0 +1,89 @@
+asyncapi: 2.0.0
+info:
+  title: Example microservice
+  version: 0.1.0
+servers:
+  broker:
+    url: amqp://rabbit.example.org
+    protocol: amqp
+
+channels:
+  /examples/{id}:
+    parameters:
+      id:
+        $ref: '#/components/parameters/id'
+    subscribe:
+      operationId: 'retrieveExampleById'
+      description: 'Retrieve examples by id'
+      message:
+        $ref: '#/components/messages/Example'
+      bindings:
+        $ref: '#/components/operationBindings/requestExampleById'
+    publish:
+      operationId: 'requestExampleById'
+      description: 'Request for examples by id'
+      message:
+        $ref: '#/components/messages/Example'
+      bindings:
+        $ref: '#/components/operationBindings/requestExampleById'
+  /examples/{id}/rpc:
+    parameters:
+      id:
+        $ref: '#/components/parameters/id'
+    subscribe:
+      operationId: 'retrieveExampleByIdRPC'
+      description: 'Retrieve examples by id'
+      message:
+        $ref: '#/components/messages/Example'
+      bindings:
+        $ref: '#/components/operationBindings/requestExampleByIdRPC'
+    publish:
+      operationId: 'requestExampleByIdRPC'
+      description: 'Request for examples by id'
+      message:
+        $ref: '#/components/messages/Example'
+      bindings:
+        $ref: '#/components/operationBindings/requestExampleByIdRPC'
+components:
+  parameters:
+    id:
+      description: Id of the example
+      schema:
+        type: integer
+  messages:
+    Example:
+      payload:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+  operationBindings:
+    requestExampleById:
+      amqp:
+        is: topic
+        x-type: basic
+        exchange:
+          name: 'org.ga.examples'
+          type: topic
+          durable: false
+          autoDelete: true
+        queue:
+          name: '1.event.example.requested'
+          durable: false
+          autoDelete: true
+          exclusive: false
+          deliveryMode: 2
+        bindingVersion: 0.2.0
+    requestExampleByIdRPC:
+      amqp:
+        is: queue
+        x-type: rpc
+        queue:
+          name: 'org.ga.examples.1.command.example.request'
+          durable: false
+          autoDelete: true
+          exclusive: false
+          deliveryMode: 2
+        bindingVersion: 0.2.0
