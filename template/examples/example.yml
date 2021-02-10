@@ -62,7 +62,7 @@ components:
   operationBindings:
     requestExampleById:
       amqp:
-        is: topic
+        is: routingKey
         x-type: basic
         exchange:
           name: 'org.ga.examples'

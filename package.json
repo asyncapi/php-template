@@ -53,7 +53,7 @@
       },
       "packageName": {
         "description": "Name of the package, this is used as the base namespace for all classes within gen code. Useful for whitelabel as well ;)",
-        "default": "GA"
+        "default": "AsyncAPI"
       }
     },
     "filters": [
