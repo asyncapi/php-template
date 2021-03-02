@@ -6,17 +6,17 @@
  * Time: 11:32
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Tests\Common\AMQP;
+namespace {{ params.packageName }}\Tests\Common\AMQP;
 
-use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
-use {{ params.packageName }}\BrokerAPI\Infrastructure\AMQPBrokerClient;
-use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
-use {{ params.packageName }}\BrokerAPI\Applications\Producer;
-use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
+use {{ params.packageName }}\Common\AMQPFactory;
+use {{ params.packageName }}\Infrastructure\AMQPBrokerClient;
+use {{ params.packageName }}\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\Messages\MessageContract;
+use {{ params.packageName }}\Applications\Consumer;
+use {{ params.packageName }}\Applications\Producer;
+use {{ params.packageName }}\Tests\BaseTest;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Handlers\AMQPRPCClientHandler;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Prophecy\Argument;

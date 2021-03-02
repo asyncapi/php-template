@@ -2,12 +2,12 @@
 require "../../../vendor/autoload.php";
 require "Handlers/RPCExampleHandler.php";
 
-use {{ params.packageName }}\BrokerAPI\BrokerAPI;
+use {{ params.packageName }};
 
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
 
-/** @var \{{ params.packageName }}\BrokerAPI\Applications\Consumer $consumer */
+/** @var \{{ params.packageName }}\Applications\Consumer $consumer */
 $consumer = $factory->createApplication(
     CONSUMER_KEY,
     [

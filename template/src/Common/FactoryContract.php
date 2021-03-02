@@ -7,12 +7,12 @@
  * Time: 11:35
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Common;
+namespace {{ params.packageName }}\Common;
 
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Applications\ApplicationContract;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\Messages\MessageContract;
+use {{ params.packageName }}\Applications\ApplicationContract;
 
 interface FactoryContract
 {

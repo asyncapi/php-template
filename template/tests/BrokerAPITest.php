@@ -1,9 +1,9 @@
 <?php
 
-namespace {{ params.packageName }}\BrokerAPI\Tests;
+namespace {{ params.packageName }}\Tests;
 
-use {{ params.packageName }}\BrokerAPI\BrokerAPI;
-use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
+use {{ params.packageName }}\BrokerAPI;
+use {{ params.packageName }}\Common\AMQPFactory;
 
 class BrokerAPITest extends BaseTest
 {

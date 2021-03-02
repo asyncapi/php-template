@@ -2,8 +2,8 @@
 
 namespace Examples\Basic\Consumer\Handlers;
 
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Messages\MessageContract;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ExampleHandler implements HandlerContract

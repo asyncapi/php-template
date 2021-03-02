@@ -9,10 +9,10 @@
  * Time: 12:24
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Applications;
+namespace {{ params.packageName }}\Applications;
 
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Handlers\AMQPRPCServerHandler;
 
 final class Consumer extends ApplicationContract
 {

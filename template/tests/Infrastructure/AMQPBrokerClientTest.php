@@ -6,15 +6,15 @@
  * Time: 14:42
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Tests\Infrastructure;
+namespace {{ params.packageName }}\Tests\Infrastructure;
 
-use {{ params.packageName }}\BrokerAPI\Infrastructure\AMQPBrokerClient;
-use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
+use {{ params.packageName }}\Infrastructure\AMQPBrokerClient;
+use {{ params.packageName }}\Tests\BaseTest;
+use {{ params.packageName }}\Messages\MessageContract;
+use {{ params.packageName }}\Handlers\AMQPRPCClientHandler;
+use {{ params.packageName }}\Handlers\AMQPRPCServerHandler;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Common\AMQPFactory;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;

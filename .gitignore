@@ -13,3 +13,4 @@ template/phpcs.xml
 template/.phpunit.result.cache
 .env
 template/.env
+.idea/

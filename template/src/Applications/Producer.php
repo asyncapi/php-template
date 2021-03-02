@@ -10,10 +10,10 @@
  * Time: 20:22
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Applications;
+namespace {{ params.packageName }}\Applications;
 
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
+use {{ params.packageName }}\Messages\MessageContract;
+use {{ params.packageName }}\Handlers\AMQPRPCClientHandler;
 
 final class Producer extends ApplicationContract
 {

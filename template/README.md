@@ -49,7 +49,7 @@ Refer to the examples folder for further details on PHP usage
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
 
-/** @var \{{ params.packageName }}\BrokerAPI\Applications\Producer $producer */
+/** @var \{{ params.packageName }}\Applications\Producer $producer */
 $producer = $factory->createApplication(
     PRODUCER_KEY,
     [

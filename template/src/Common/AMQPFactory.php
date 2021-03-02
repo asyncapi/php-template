@@ -8,15 +8,15 @@
  * Time: 11:39
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Common;
+namespace {{ params.packageName }}\Common;
 
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
-use {{ params.packageName }}\BrokerAPI\Infrastructure\AMQPBrokerClient;
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Applications\ApplicationContract;
-use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
-use {{ params.packageName }}\BrokerAPI\Applications\Producer;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\Infrastructure\AMQPBrokerClient;
+use {{ params.packageName }}\Messages\MessageContract;
+use {{ params.packageName }}\Applications\ApplicationContract;
+use {{ params.packageName }}\Applications\Consumer;
+use {{ params.packageName }}\Applications\Producer;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
