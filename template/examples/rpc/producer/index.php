@@ -1,13 +1,13 @@
 <?php
 require "../../../vendor/autoload.php";
 
-use {{ params.packageName }}\BrokerAPI\BrokerAPI;
-use {{ params.packageName }}\BrokerAPI\Messages\Example;
+use {{ params.packageName }};
+use {{ params.packageName }}\Messages\Example;
 
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
 
-/** @var \{{ params.packageName }}\BrokerAPI\Applications\Producer $producer */
+/** @var \{{ params.packageName }}\Applications\Producer $producer */
 $producer = $factory->createApplication(
     PRODUCER_KEY,
     [

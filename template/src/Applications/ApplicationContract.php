@@ -10,11 +10,11 @@
  * Time: 14:38
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Applications;
+namespace {{ params.packageName }}\Applications;
 
-use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\Common\FactoryContract;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Infrastructure\BrokerClientContract;
 
 abstract class ApplicationContract
 {

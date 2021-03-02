@@ -8,7 +8,7 @@
  * Time: 11:03
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Messages;
+namespace {{ params.packageName }}\Messages;
 
 abstract class MessageContract implements \JsonSerializable
 {

@@ -8,17 +8,17 @@
  * Time: 14:37
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Infrastructure;
+namespace {{ params.packageName }}\Infrastructure;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Ramsey\Uuid\Uuid;
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCClientHandler;
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
+use {{ params.packageName }}\Messages\MessageContract;
+use {{ params.packageName }}\Handlers\AMQPRPCServerHandler;
+use {{ params.packageName }}\Handlers\AMQPRPCClientHandler;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Common\FactoryContract;
 
 class AMQPBrokerClient implements BrokerClientContract
 {

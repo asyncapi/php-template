@@ -10,12 +10,12 @@
  * Time: 11:11
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Infrastructure;
+namespace {{ params.packageName }}\Infrastructure;
 
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
+use {{ params.packageName }}\Messages\MessageContract;
+use {{ params.packageName }}\Handlers\AMQPRPCServerHandler;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Common\FactoryContract;
 
 
 interface BrokerClientContract

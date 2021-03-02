@@ -8,9 +8,9 @@
  * Time: 11:03
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Handlers;
+namespace {{ params.packageName }}\Handlers;
 
-use {{ params.packageName }}\BrokerAPI\Messages\MessageContract;
+use {{ params.packageName }}\Messages\MessageContract;
 
 interface HandlerContract
 {

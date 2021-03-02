@@ -6,14 +6,14 @@
  * Time: 19:18
  */
 
-namespace {{ params.packageName }}\BrokerAPI\Tests\Applications;
+namespace {{ params.packageName }}\Tests\Applications;
 
-use {{ params.packageName }}\BrokerAPI\Applications\Consumer;
-use {{ params.packageName }}\BrokerAPI\Applications\Producer;
-use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
-use {{ params.packageName }}\BrokerAPI\Handlers\HandlerContract;
-use {{ params.packageName }}\BrokerAPI\Infrastructure\BrokerClientContract;
-use {{ params.packageName }}\BrokerAPI\Tests\BaseTest;
+use {{ params.packageName }}\Applications\Consumer;
+use {{ params.packageName }}\Applications\Producer;
+use {{ params.packageName }}\Common\FactoryContract;
+use {{ params.packageName }}\Handlers\HandlerContract;
+use {{ params.packageName }}\Infrastructure\BrokerClientContract;
+use {{ params.packageName }}\Tests\BaseTest;
 
 class BaseApplicationTest extends BaseTest
 {

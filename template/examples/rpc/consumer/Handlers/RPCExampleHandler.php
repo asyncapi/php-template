@@ -3,9 +3,9 @@
 namespace Examples\RPC\Consumer\Handlers;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
-use {{ params.packageName }}\BrokerAPI\Handlers\AMQPRPCServerHandler;
-use {{ params.packageName }}\BrokerAPI\Messages\Example;
+use {{ params.packageName }}\Common\AMQPFactory;
+use {{ params.packageName }}\Handlers\AMQPRPCServerHandler;
+use {{ params.packageName }}\Messages\Example;
 
 /**
  * Created by PhpStorm.

@@ -9,11 +9,11 @@
  * Time: 10:41
  */
 
-namespace {{ params.packageName }}\BrokerAPI;
+namespace {{ params.packageName }};
 
 use Dotenv\Dotenv;
-use {{ params.packageName }}\BrokerAPI\Common\AMQPFactory;
-use {{ params.packageName }}\BrokerAPI\Common\FactoryContract;
+use {{ params.packageName }}\Common\AMQPFactory;
+use {{ params.packageName }}\Common\FactoryContract;
 
 final class BrokerAPI
 {

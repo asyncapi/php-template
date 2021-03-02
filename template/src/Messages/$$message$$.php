@@ -1,6 +1,6 @@
 <?php
 
-namespace {{ params.packageName }}\BrokerAPI\Messages;
+namespace {{ params.packageName }}\Messages;
 {%- if message.description() or message.examples() %}/**{%- for line in message.description() | splitByLines %}
 * {{- line | safe }}{%- endfor %}{%- if message.examples() %}
 * Examples: {{- message.examples() | examplesToString | safe }}{%- endif %}
