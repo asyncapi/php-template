@@ -1,9 +1,9 @@
 <?php
 /**
- * Producer application is the single final class that you should obtain from concrete factory
+ * Subscriber application is the single final class that you should obtain from concrete factory
  * This application will have methods for each channel/operation and you should only
  * pass messages and handlers that will implement any business logic needed (eg: rpc calls)
- * Producer = Publisher
+ * Subscriber = Publisher
  *
  * User: emiliano
  * Date: 30/12/20
@@ -15,13 +15,13 @@ namespace {{ params.packageName }}\Applications;
 use {{ params.packageName }}\Messages\MessageContract;
 use {{ params.packageName }}\Handlers\AMQPRPCClientHandler;
 
-final class Producer extends ApplicationContract
+final class Publisher extends ApplicationContract
 {
 {%- for channelName, channel in asyncapi.channels() %}
-{%- if channel.hasPublish() %}
-    {%- set methodName = channel.publish().id() %}
-    {%- set methodDescription = channel.publish().description() %}
-    {%- set amqpBindings = channel.publish().bindings().amqp %}
+{%- if channel.hasSubscribe() %}
+    {%- set methodName = channel.subscribe().id() %}
+    {%- set methodDescription = channel.subscribe().description() %}
+    {%- set amqpBindings = channel.subscribe().bindings().amqp %}
     {%- if amqpBindings["x-type"] == 'basic' %}
     /**
      * {{ methodDescription }}

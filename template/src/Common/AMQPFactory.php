@@ -15,8 +15,8 @@ use {{ params.packageName }}\Infrastructure\BrokerClientContract;
 use {{ params.packageName }}\Infrastructure\AMQPBrokerClient;
 use {{ params.packageName }}\Messages\MessageContract;
 use {{ params.packageName }}\Applications\ApplicationContract;
-use {{ params.packageName }}\Applications\Consumer;
-use {{ params.packageName }}\Applications\Producer;
+use {{ params.packageName }}\Applications\Publisher;
+use {{ params.packageName }}\Applications\Subscriber;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -75,13 +75,13 @@ class AMQPFactory implements FactoryContract
         $brokerClient = $this->createBrokerClient($config);
 
         switch ($applicationType) {
-            case PRODUCER_KEY:
-                $application = new Producer(
+            case SUBSCRIBER_KEY:
+                $application = new Subscriber(
                     $brokerClient
                 );
                 break;
-            case CONSUMER_KEY:
-                $application = new Consumer(
+            case PUBLISHER_KEY:
+                $application = new Publisher(
                     $brokerClient
                 );
                 break;

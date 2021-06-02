@@ -1,6 +1,6 @@
 <?php
 
-namespace Examples\Basic\Consumer\Handlers;
+namespace Examples\Basic\Publisher\Handlers;
 
 use {{ params.packageName }}\Handlers\HandlerContract;
 use {{ params.packageName }}\Messages\MessageContract;

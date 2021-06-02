@@ -49,9 +49,9 @@ Refer to the examples folder for further details on PHP usage
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
 
-/** @var \{{ params.packageName }}\Applications\Producer $producer */
-$producer = $factory->createApplication(
-    PRODUCER_KEY,
+/** @var \{{ params.packageName }}\Applications\Subscriber $subscriber */
+$subscriber = $factory->createApplication(
+    SUBSCRIBER_KEY,
     [
         BROKER_HOST_KEY         => 'localhost',
         BROKER_USER_KEY         => 'guest',
@@ -68,7 +68,7 @@ $message = $factory->createMessage(
     ]
 );
 
-$producer->requestExampleById($message);
+$subscriber->requestExampleById($message);
 ```
 
 ## Change log

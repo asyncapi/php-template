@@ -1,9 +1,9 @@
 <?php
 /**
- * Consumer application is the single final class that you should obtain from concrete factory
+ * Publisher application is the single final class that you should obtain from concrete factory
  * This application will have methods for each channel/operation and you should only
  * Pass custom handlers to those methods for any business logic needed on message received
- * Consumer = Worker = Subscriber
+ * Publisher = Worker = Subscriber
  * User: emiliano
  * Date: 7/1/21
  * Time: 12:24
@@ -14,13 +14,13 @@ namespace {{ params.packageName }}\Applications;
 use {{ params.packageName }}\Handlers\HandlerContract;
 use {{ params.packageName }}\Handlers\AMQPRPCServerHandler;
 
-final class Consumer extends ApplicationContract
+final class Subscriber extends ApplicationContract
 {
 {%- for channelName, channel in asyncapi.channels() %}
-{%- if channel.hasSubscribe() %}
-    {%- set methodName = channel.subscribe().id() %}
-    {%- set methodDescription = channel.subscribe().description() %}
-    {%- set amqpBindings = channel.subscribe().bindings().amqp %}
+{%- if channel.hasPublish() %}
+    {%- set methodName = channel.publish().id() %}
+    {%- set methodDescription = channel.publish().description() %}
+    {%- set amqpBindings = channel.publish().bindings().amqp %}
     {%- if amqpBindings["x-type"] == 'basic' %}
     /**
      * {{ methodDescription }}
@@ -43,7 +43,7 @@ final class Consumer extends ApplicationContract
             {%- set queueAutoDelete = amqpBindings.queue.autoDelete %}
             $config = array_merge([
                 'queue'           => '',
-                'consumerTag'     => '',
+                'publisherTag'     => '',
                 'noLocal'         => false,
                 'noAck'           => false,
                 'exclusive'       => {{queueExclusive}},

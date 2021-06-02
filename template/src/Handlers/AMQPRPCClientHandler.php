@@ -1,6 +1,6 @@
 <?php
 /**
- * This class is used by a Consumer as a means to implement business logic "OnRequest"
+ * This class is used by a Publisher as a means to implement business logic "OnRequest"
  * From any given RPC client (Publisher)
  *
  * User: emiliano

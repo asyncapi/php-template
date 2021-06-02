@@ -7,9 +7,9 @@ use {{ params.packageName }}\Messages\Example;
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
 
-/** @var \{{ params.packageName }}\Applications\Producer $producer */
-$producer = $factory->createApplication(
-    PRODUCER_KEY,
+/** @var \{{ params.packageName }}\Applications\Subscriber $subscriber */
+$subscriber = $factory->createApplication(
+    SUBSCRIBER_KEY,
     [
         BROKER_HOST_KEY         => $_ENV[ENV_BROKER_HOST_KEY] ?? BROKER_HOST_DEFAULT,
         BROKER_USER_KEY         => $_ENV[ENV_BROKER_USER_KEY] ?? BROKER_USER_DEFAULT,
@@ -25,6 +25,4 @@ $message = $factory->createMessage(
         'id' => 1,
     ]
 );
-/** @var \PhpAmqpLib\Message\AMQPMessage $return */
-$return = $producer->requestExampleByIdRPC($message);
-print_r($return->getBody());
+$subscriber->requestExampleById($message);
