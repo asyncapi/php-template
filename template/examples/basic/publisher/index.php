@@ -1,8 +1,8 @@
 <?php
 require "../../../vendor/autoload.php";
-require "Handlers/ExampleHandler.php";
 
 use {{ params.packageName }};
+use {{ params.packageName }}\Messages\Example;
 
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
@@ -18,5 +18,11 @@ $publisher = $factory->createApplication(
         BROKER_VIRTUAL_HOST_KEY => $_ENV[ENV_BROKER_VIRTUAL_HOST_KEY] ?? BROKER_VIRTUAL_HOST_DEFAULT,
     ]
 );
-$handler = new \Examples\Basic\Publisher\Handlers\ExampleHandler();
-$publisher->retrieveExampleById($handler);
+
+$message = $factory->createMessage(
+    Example::class,
+    [
+        'id' => 1,
+    ]
+);
+$publisher->requestExampleById($message);

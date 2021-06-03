@@ -1,8 +1,8 @@
 <?php
 require "../../../vendor/autoload.php";
+require "Handlers/RPCExampleHandler.php";
 
 use {{ params.packageName }};
-use {{ params.packageName }}\Messages\Example;
 
 $brokerAPI = new BrokerAPI();
 $factory = $brokerAPI->init();
@@ -18,13 +18,5 @@ $subscriber = $factory->createApplication(
         BROKER_VIRTUAL_HOST_KEY => $_ENV[ENV_BROKER_VIRTUAL_HOST_KEY] ?? BROKER_VIRTUAL_HOST_DEFAULT,
     ]
 );
-
-$message = $factory->createMessage(
-    Example::class,
-    [
-        'id' => 1,
-    ]
-);
-/** @var \PhpAmqpLib\Message\AMQPMessage $return */
-$return = $subscriber->requestExampleByIdRPC($message);
-print_r($return->getBody());
+$handler = new \Examples\RPC\Subscriber\Handlers\RPCExampleHandler();
+$subscriber->retrieveExampleByIdRPC($handler);
