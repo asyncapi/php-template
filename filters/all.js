@@ -14,10 +14,10 @@ function toPHPType(str) {
         case 'date':
             return 'DateTime';
         case 'time':
-            return '\DateTime';
+            return '\\DateTime';
         case 'dateTime':
         case 'date-time':
-            return '\DateTime';
+            return '\\DateTime';
         case 'string':
         case 'password':
         case 'byte':
@@ -26,7 +26,7 @@ function toPHPType(str) {
         case 'double':
             return 'float';
         default:
-            return '\stdClass';
+            return '\\stdClass';
     }
 }
 
