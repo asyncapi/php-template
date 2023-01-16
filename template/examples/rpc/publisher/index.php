@@ -4,7 +4,7 @@ require "../../../vendor/autoload.php";
 use {{ params.packageName }};
 use {{ params.packageName }}\Messages\Example;
 
-$brokerAPI = new BrokerAPI();
+$brokerAPI = new AsyncAPI();
 $factory = $brokerAPI->init();
 
 /** @var \{{ params.packageName }}\Applications\Publisher $publisher */

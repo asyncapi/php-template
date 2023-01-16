@@ -4,7 +4,7 @@ require "Handlers/RPCExampleHandler.php";
 
 use {{ params.packageName }};
 
-$brokerAPI = new BrokerAPI();
+$brokerAPI = new AsyncAPI();
 $factory = $brokerAPI->init();
 
 /** @var \{{ params.packageName }}\Applications\Subscriber $subscriber */

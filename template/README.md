@@ -1,4 +1,4 @@
-# BrokerAPI
+# AsyncAPI
 
 [//]: # "[![Latest Version on Packagist][ico-version]][link-packagist]"
 
@@ -13,7 +13,7 @@
 [//]: # "[![Total Downloads][ico-downloads]][link-downloads]"
 
 
-BrokerAPI is a wrapper for Message-driven API's built on top of most used industry plugins such as [PHP AMQP lib](https://packagist.org/packages/php-amqplib/php-amqplib) for RabbitMQ.
+AsyncAPI is a wrapper for Message-driven API's built on top of most used industry plugins such as [PHP AMQP lib](https://packagist.org/packages/php-amqplib/php-amqplib) for RabbitMQ.
 It is built for usage altogether with [AsyncAPI specs and generators](https://github.com/asyncapi/generator)
 
 ## Structure
@@ -46,7 +46,7 @@ Once you hvae the generator installed, you can try to generate code from any val
 
 Refer to the examples folder for further details on PHP usage
 ``` bash
-$brokerAPI = new BrokerAPI();
+$brokerAPI = new AsyncAPI();
 $factory = $brokerAPI->init();
 
 /** @var \{{ params.packageName }}\Applications\Subscriber $subscriber */
@@ -92,17 +92,17 @@ If you discover any security related issues, please email ezublena@gmail.com ins
 
 The MIT License (MIT). Please see [License File](../LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/GA/BrokerAPI.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/GA/AsyncAPI.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/GA/BrokerAPI/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/GA/BrokerAPI.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/GA/BrokerAPI.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/GA/BrokerAPI.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/GA/AsyncAPI/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/GA/AsyncAPI.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/GA/AsyncAPI.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/GA/AsyncAPI.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/GA/BrokerAPI
-[link-travis]: https://travis-ci.org/GA/BrokerAPI
-[link-scrutinizer]: https://scrutinizer-ci.com/g/GA/BrokerAPI/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/GA/BrokerAPI
-[link-downloads]: https://packagist.org/packages/GA/BrokerAPI
+[link-packagist]: https://packagist.org/packages/GA/AsyncAPI
+[link-travis]: https://travis-ci.org/GA/AsyncAPI
+[link-scrutinizer]: https://scrutinizer-ci.com/g/GA/AsyncAPI/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/GA/AsyncAPI
+[link-downloads]: https://packagist.org/packages/GA/AsyncAPI
 [link-author]: https://github.com/emilianozublena
 [link-contributors]: ../../contributors

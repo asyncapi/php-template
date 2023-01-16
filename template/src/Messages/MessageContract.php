@@ -1,6 +1,6 @@
 <?php
 /**
- * Base contract for all messages in BrokerAPI.
+ * Base contract for all messages in AsyncAPI.
  * Messages are constructed from the messages schema in async api
  *
  * User: emiliano
