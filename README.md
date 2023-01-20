@@ -84,4 +84,4 @@ The MIT License (MIT). Please see [License File](./LICENSE.md) for more informat
 [link-code-quality]: https://scrutinizer-ci.com/g/GA/BrokerAPI
 [link-downloads]: https://packagist.org/packages/GA/BrokerAPI
 [link-author]: https://github.com/emilianozublena
-[link-contributors]: https://github.com/asyncapi/asyncapi-php-template/graphs/contributors
+[link-contributors]: https://github.com/asyncapi/php-template/graphs/contributors
