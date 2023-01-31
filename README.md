@@ -2,7 +2,7 @@
 
 [//]: # "[![Latest Version on Packagist][ico-version]][link-packagist]"
 
-[![Software License][ico-license]](../LICENSE.md)
+[![Software License][ico-license]](./LICENSE.md)
 
 [//]: # "[![Build Status][ico-travis]][link-travis]"
 
@@ -52,11 +52,11 @@ Refer to the /examples folder for further examples
 
 ## Change log
 
-Please see [CHANGELOG](../CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](./CHANGELOG.md) for more information on what has changed recently.
 
 ## Contributing
 
-Please see [CONTRIBUTING](../CONTRIBUTING.md) and [CODE_OF_CONDUCT](../CODE_OF_CONDUCT.md) for details.
+Please see [CONTRIBUTING](./CONTRIBUTING.md) and [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md) for details.
 
 ## Security
 
@@ -69,7 +69,7 @@ If you discover any security related issues, please email ezublena@gmail.com ins
 
 ## License
 
-The MIT License (MIT). Please see [License File](../LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](./LICENSE.md) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/GA/BrokerAPI.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
@@ -84,4 +84,4 @@ The MIT License (MIT). Please see [License File](../LICENSE.md) for more informa
 [link-code-quality]: https://scrutinizer-ci.com/g/GA/BrokerAPI
 [link-downloads]: https://packagist.org/packages/GA/BrokerAPI
 [link-author]: https://github.com/emilianozublena
-[link-contributors]: ../../contributors
+[link-contributors]: https://github.com/asyncapi/php-template/graphs/contributors

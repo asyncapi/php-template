@@ -105,4 +105,4 @@ The MIT License (MIT). Please see [License File](../LICENSE.md) for more informa
 [link-code-quality]: https://scrutinizer-ci.com/g/GA/AsyncAPI
 [link-downloads]: https://packagist.org/packages/GA/AsyncAPI
 [link-author]: https://github.com/emilianozublena
-[link-contributors]: ../../contributors
+[link-contributors]: https://github.com/asyncapi/php-template/graphs/contributors

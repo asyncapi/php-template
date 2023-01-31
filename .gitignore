@@ -5,7 +5,6 @@ output
 .DS_Store
 __transpiled
 test/temp
-package-lock.json
 template/build
 template/composer.lock
 template/vendor
