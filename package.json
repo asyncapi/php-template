@@ -1,14 +1,13 @@
 {
-  "name": "php-template",
+  "name": "@asyncapi/php-template",
   "version": "0.0.1",
   "description": "Template package for AsyncAPI code generation",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "semantic-release",
     "get-version": "echo $npm_package_version",
     "gen-readme-toc": "markdown-toc -i README.md",
-    "lint": "eslint --max-warnings 0 --fix --config .eslintrc ."
+    "lint": "eslint --max-warnings 0 --fix --config .eslintrc .",
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
   "keywords": [
     "asyncapi",
@@ -62,12 +61,6 @@
     "generator": ">=1.1.0 <2.0.0"
   },
   "devDependencies": {
-    "@semantic-release/commit-analyzer": "^8.0.1",
-    "@semantic-release/github": "^7.0.7",
-    "@semantic-release/npm": "^7.0.5",
-    "@semantic-release/release-notes-generator": "^9.0.1",
-    "all-contributors-cli": "^6.19.0",
-    "conventional-changelog-conventionalcommits": "^4.4.0",
     "eslint": "^7.17.0",
     "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-react": "^7.22.0",
@@ -76,7 +69,6 @@
     "jest": "^26.4.2",
     "jest-esm-transformer": "^1.0.0",
     "markdown-toc": "^1.2.0",
-    "rimraf": "^3.0.2",
-    "semantic-release": "^17.3.2"
+    "rimraf": "^3.0.2"
   }
 }
