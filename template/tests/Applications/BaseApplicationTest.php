@@ -8,8 +8,8 @@
 
 namespace {{ params.packageName }}\Tests\Applications;
 
-use {{ params.packageName }}\Applications\Consumer;
-use {{ params.packageName }}\Applications\Producer;
+use {{ params.packageName }}\Applications\Publisher;
+use {{ params.packageName }}\Applications\Subscriber;
 use {{ params.packageName }}\Common\FactoryContract;
 use {{ params.packageName }}\Handlers\HandlerContract;
 use {{ params.packageName }}\Infrastructure\BrokerClientContract;
@@ -29,15 +29,15 @@ class BaseApplicationTest extends BaseTest
         $factorySetter = $factory['setter'];
 
         //When we try to set it
-        $producer = new Producer($brokerClientProphecy->reveal());
-        $consumer = new Consumer($brokerClientProphecy->reveal());
-        $producer->$brokerSetter($brokerClientProphecy->reveal());
-        $consumer->$brokerSetter($brokerClientProphecy->reveal());
-        $producer->$factorySetter($factoryProphecy->reveal());
-        $consumer->$factorySetter($factoryProphecy->reveal());
+        $subscriber = new Subscriber($brokerClientProphecy->reveal());
+        $publisher = new Publisher($brokerClientProphecy->reveal());
+        $subscriber->$brokerSetter($brokerClientProphecy->reveal());
+        $publisher->$brokerSetter($brokerClientProphecy->reveal());
+        $subscriber->$factorySetter($factoryProphecy->reveal());
+        $publisher->$factorySetter($factoryProphecy->reveal());
 
         //Then we assert we get it back
-        $this->assertDependenciesFromDataProvider($producer, $brokerClient, $factory, $consumer);
+        $this->assertDependenciesFromDataProvider($subscriber, $brokerClient, $factory, $publisher);
     }
 
     /**
@@ -50,17 +50,17 @@ class BaseApplicationTest extends BaseTest
         list($brokerClient, $factory, $brokerClientProphecy, $factoryProphecy) = $this->setDependenciesFromDataProvider($expectedDependencies);
 
         //When we instantiate applications
-        $producer = new Producer(
+        $subscriber = new Subscriber(
             $brokerClientProphecy->reveal(),
             $factoryProphecy->reveal()
         );
-        $consumer = new Consumer(
+        $publisher = new Publisher(
             $brokerClientProphecy->reveal(),
             $factoryProphecy->reveal()
         );
 
         //Then we assert we get expected dependencies back
-        $this->assertDependenciesFromDataProvider($producer, $brokerClient, $factory, $consumer);
+        $this->assertDependenciesFromDataProvider($subscriber, $brokerClient, $factory, $publisher);
     }
 
     public function dependenciesWithSettersAndGetters()
@@ -97,18 +97,18 @@ class BaseApplicationTest extends BaseTest
     }
 
     /**
-     * @param $producer
+     * @param $subscriber
      * @param $brokerClient
      * @param $factory
-     * @param $consumer
+     * @param $publisher
      */
-    private function assertDependenciesFromDataProvider($producer, $brokerClient, $factory, $consumer): void
+    private function assertDependenciesFromDataProvider($subscriber, $brokerClient, $factory, $publisher): void
     {
         $brokerGetter = $brokerClient['getter'];
         $factoryGetter = $factory['getter'];
-        $this->assertTrue($producer->$brokerGetter() instanceof $brokerClient['dependency']);
-        $this->assertTrue($producer->$factoryGetter() instanceof $factory['dependency']);
-        $this->assertTrue($consumer->$brokerGetter() instanceof $brokerClient['dependency']);
-        $this->assertTrue($consumer->$factoryGetter() instanceof $factory['dependency']);
+        $this->assertTrue($subscriber->$brokerGetter() instanceof $brokerClient['dependency']);
+        $this->assertTrue($subscriber->$factoryGetter() instanceof $factory['dependency']);
+        $this->assertTrue($publisher->$brokerGetter() instanceof $brokerClient['dependency']);
+        $this->assertTrue($publisher->$factoryGetter() instanceof $factory['dependency']);
     }
 }

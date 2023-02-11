@@ -11,7 +11,7 @@
          stopOnFailure               = "true">
 
     <testsuites>
-        <testsuite name="BrokerAPI Test Suite">
+        <testsuite name="AsyncAPI Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

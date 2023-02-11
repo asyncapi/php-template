@@ -28,6 +28,6 @@ const MQTT_PROTOCOL_KEY = 'mqtt';
 /** END OF PROTOCOL LITERALS */
 
 /** APPLICATION LITERALS */
-const PRODUCER_KEY = 'producer';
-const CONSUMER_KEY = 'consumer';
+const SUBSCRIBER_KEY = 'subscriber';
+const PUBLISHER_KEY = 'publisher';
 /** END OF APPLICATION LITERALS */

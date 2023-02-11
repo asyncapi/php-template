@@ -12,8 +12,8 @@ use {{ params.packageName }}\Common\AMQPFactory;
 use {{ params.packageName }}\Infrastructure\AMQPBrokerClient;
 use {{ params.packageName }}\Infrastructure\BrokerClientContract;
 use {{ params.packageName }}\Messages\MessageContract;
-use {{ params.packageName }}\Applications\Consumer;
-use {{ params.packageName }}\Applications\Producer;
+use {{ params.packageName }}\Applications\Subscriber;
+use {{ params.packageName }}\Applications\Publisher;
 use {{ params.packageName }}\Tests\BaseTest;
 use {{ params.packageName }}\Handlers\HandlerContract;
 use {{ params.packageName }}\Handlers\AMQPRPCClientHandler;
@@ -147,8 +147,8 @@ class AMQPFactoryTest extends BaseTest
     {
         return [
             [
-                'applicationTypeConstant' => 'PRODUCER_KEY',
-                'expectedApplicationFqn'  => Producer::class,
+                'applicationTypeConstant' => 'SUBSCRIBER_KEY',
+                'expectedApplicationFqn'  => Subscriber::class,
                 'expectedDependencies'    => [
                     'brokerClient' => [
                         'getter'             => 'getBrokerClient',
@@ -161,8 +161,8 @@ class AMQPFactoryTest extends BaseTest
                 ],
             ],
             [
-                'applicationTypeConstant' => 'CONSUMER_KEY',
-                'expectedApplicationFqn'  => Consumer::class,
+                'applicationTypeConstant' => 'PUBLISHER_KEY',
+                'expectedApplicationFqn'  => Publisher::class,
                 'expectedDependencies'    => [
                     'brokerClient' => [
                         'getter'             => 'getBrokerClient',

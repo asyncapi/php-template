@@ -1,6 +1,6 @@
 <?php
 
-namespace Examples\RPC\Consumer\Handlers;
+namespace Examples\RPC\Publisher\Handlers;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use {{ params.packageName }}\Common\AMQPFactory;

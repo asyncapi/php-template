@@ -4,12 +4,12 @@ require "../../../vendor/autoload.php";
 use {{ params.packageName }};
 use {{ params.packageName }}\Messages\Example;
 
-$brokerAPI = new BrokerAPI();
+$brokerAPI = new AsyncAPI();
 $factory = $brokerAPI->init();
 
-/** @var \{{ params.packageName }}\Applications\Producer $producer */
-$producer = $factory->createApplication(
-    PRODUCER_KEY,
+/** @var \{{ params.packageName }}\Applications\Publisher $publisher */
+$publisher = $factory->createApplication(
+    PUBLISHER_KEY,
     [
         BROKER_HOST_KEY         => $_ENV[ENV_BROKER_HOST_KEY] ?? BROKER_HOST_DEFAULT,
         BROKER_USER_KEY         => $_ENV[ENV_BROKER_USER_KEY] ?? BROKER_USER_DEFAULT,
@@ -25,4 +25,4 @@ $message = $factory->createMessage(
         'id' => 1,
     ]
 );
-$producer->requestExampleById($message);
+$publisher->requestExampleById($message);

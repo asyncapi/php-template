@@ -1,7 +1,7 @@
 <?php
 /**
  * Base interface for all Applications
- * In BrokerAPI applications can either be Producers or Consumers
+ * In AsyncAPI applications can either be Subscribers or Publishers
  * (depending on message protocol these often get called as publishers/subscribers)
  * Application classes should never be extended
  *

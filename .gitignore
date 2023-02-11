@@ -13,3 +13,4 @@ template/.phpunit.result.cache
 .env
 template/.env
 .idea/
+*.DS_Store

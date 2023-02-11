@@ -2,10 +2,10 @@
 
 namespace {{ params.packageName }}\Tests;
 
-use {{ params.packageName }}\BrokerAPI;
+use {{ params.packageName }}\AsyncAPI;
 use {{ params.packageName }}\Common\AMQPFactory;
 
-class BrokerAPITest extends BaseTest
+class AsyncAPITest extends BaseTest
 {
     /**
      * @test
@@ -15,9 +15,9 @@ class BrokerAPITest extends BaseTest
         $protocolConstantName,
         $expectedFactoryFqn
     ) {
-        //Given we have a valid protocol string and a BrokerAPI instance
+        //Given we have a valid protocol string and a AsyncAPI instance
         $protocol = constant($protocolConstantName);
-        $brokerAPI = new BrokerAPI($protocol);
+        $brokerAPI = new AsyncAPI($protocol);
 
         //When we try to create the factory
         $factory = $brokerAPI->init();

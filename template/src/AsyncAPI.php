@@ -1,6 +1,6 @@
 <?php
 /**
- * This is the single entry point for the BrokerAPI.
+ * This is the single entry point for the AsyncAPI.
  * This class will be in charge of instantiating whatever Factory is needed
  * depending on what's the default protocol on async api file
  * This default protocol can be overwritten by just sending it while instantiating this class
@@ -15,13 +15,13 @@ use Dotenv\Dotenv;
 use {{ params.packageName }}\Common\AMQPFactory;
 use {{ params.packageName }}\Common\FactoryContract;
 
-final class BrokerAPI
+final class AsyncAPI
 {
     /** @var string $protocol */
     private $protocol;
 
     /**
-     * BrokerAPI constructor.
+     * AsyncAPI constructor.
      * @param string $protocol
      */
     public function __construct(string $protocol = '{{-asyncapi | getDefaultProtocol}}')

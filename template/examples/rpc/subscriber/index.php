@@ -1,15 +1,15 @@
 <?php
 require "../../../vendor/autoload.php";
-require "Handlers/ExampleHandler.php";
+require "Handlers/RPCExampleHandler.php";
 
 use {{ params.packageName }};
 
-$brokerAPI = new BrokerAPI();
+$brokerAPI = new AsyncAPI();
 $factory = $brokerAPI->init();
 
-/** @var \{{ params.packageName }}\Applications\Consumer $consumer */
-$consumer = $factory->createApplication(
-    CONSUMER_KEY,
+/** @var \{{ params.packageName }}\Applications\Subscriber $subscriber */
+$subscriber = $factory->createApplication(
+    SUBSCRIBER_KEY,
     [
         BROKER_HOST_KEY         => $_ENV[ENV_BROKER_HOST_KEY] ?? BROKER_HOST_DEFAULT,
         BROKER_USER_KEY         => $_ENV[ENV_BROKER_USER_KEY] ?? BROKER_USER_DEFAULT,
@@ -18,5 +18,5 @@ $consumer = $factory->createApplication(
         BROKER_VIRTUAL_HOST_KEY => $_ENV[ENV_BROKER_VIRTUAL_HOST_KEY] ?? BROKER_VIRTUAL_HOST_DEFAULT,
     ]
 );
-$handler = new \Examples\Basic\Consumer\Handlers\ExampleHandler();
-$consumer->retrieveExampleById($handler);
+$handler = new \Examples\RPC\Subscriber\Handlers\RPCExampleHandler();
+$subscriber->retrieveExampleByIdRPC($handler);

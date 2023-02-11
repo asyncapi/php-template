@@ -163,7 +163,7 @@ class AMQPBrokerClient implements BrokerClientContract
     {
         try {
             /**
-             * @var string|null $consumerTag
+             * @var string|null $publisherTag
              * @var bool|null $noLocal
              * @var bool|null $noAck
              * @var bool|null $exclusive
@@ -201,7 +201,7 @@ class AMQPBrokerClient implements BrokerClientContract
             $this->channel->queue_bind($queueName, $exchangeName, $bindingKey);
             $this->channel->basic_consume(
                 $queueName,
-                $consumerTag ?? '',
+                $publisherTag ?? '',
                 $noLocal ?? false,
                 $noAck ?? false,
                 $exclusive ?? false,
