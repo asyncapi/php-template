@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/php-template",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Template package for AsyncAPI code generation",
   "main": "index.js",
   "scripts": {
